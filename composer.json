@@ -1,0 +1,24 @@
+{
+    "name": "mjolnic/language",
+    "description": "Multilingual features for Laravel 4",
+    "keywords": ["i18n", "laravel", "multilingual", "translation", "language", "locale"],
+    "authors": [
+        {
+            "name": "Javier Aguilar",
+            "email": "mjolnic@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Mjolnic\\Language\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
