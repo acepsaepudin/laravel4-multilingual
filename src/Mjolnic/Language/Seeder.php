@@ -2,7 +2,7 @@
 
 namespace Mjolnic\Language;
 
-class Seeder extends \Illuminate\Database\Seeder {
+class Seeder extends \Seeder {
 
     /**
      * Run the database seeds.

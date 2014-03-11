@@ -10,7 +10,7 @@ namespace Mjolnic\Language;
  * @property boolean $is_active
  * @property int $sorting
  */
-class Language extends \Illuminate\Database\Eloquent {
+class Language extends \Eloquent {
 
     /**
      *
