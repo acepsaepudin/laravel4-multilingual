@@ -26,7 +26,7 @@ it will bind the required route for you.
     'Illuminate\Foundation\Providers\ArtisanServiceProvider',
     'Illuminate\Auth\AuthServiceProvider',
     ...
-    'Mjolnic\Thumbs\LanguageServiceProvider',
+    'Mjolnic\Language\LanguageServiceProvider',
 
 ),
 ```
@@ -52,13 +52,12 @@ In order to use the languages stored in the database, you must run the package m
     $ php artisan migrate --package="mjolnic/language"
     $ php artisan db:seed --class="Mjolnic\Language\Seeder"
 
-## Enabling multilanguage routes
+## Enabling multilingual routes
 
 In your routes.php, put your multilingual routes inside a Route group
 with the same prefix as the current language code:
 
 ```php
-// Multilingual routing usage sample
 Route::group(array('prefix' => \Mjolnic\Language\Resolver::getCurrent()->code), function() {
     // Multilingual routes here
 });
