@@ -38,6 +38,8 @@ In order to use the languages stored in the database, you must run the package m
     php artisan migrate --package="thorfw/i18n"
     php artisan db:seed --class="Thor\I18n\Seeder"
 
+Then change `'use_database'` to true.
+
 ## Enabling multilingual routes
 
 In your routes.php, put your multilingual routes inside a Route group
