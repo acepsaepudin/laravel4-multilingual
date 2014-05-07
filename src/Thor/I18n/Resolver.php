@@ -102,7 +102,6 @@ class Resolver {
         if ($language === null) {
             $language = $default;
         }
-        dd($language . ' xx');
 
         if (($language == false) or ( !in_array($language, array_keys(Config::get('i18n::languages'))))) {
             \Event::fire('i18n::invalid', array($language, Config::get('i18n::default_language')), false);

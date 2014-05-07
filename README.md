@@ -57,3 +57,24 @@ route segments or the HTTP_ACCEPT_LANGUAGE header as a fallback (if use_header i
 * If you specified in the config that you want to use a database, the i18n config 
 languages and default_language are retrieved and overriden from the languages table. Disabled by default.
 * A variable called `$language`, instance of the `\Thor\I18n\Language` model, will be always shared through all views.
+
+
+## Demo
+
+To test that it works, use the following routes, to display the current language information:
+
+```php
+Route::get('/', function()
+{
+    return \Thor\I18n\Resolver::getCurrent();
+});
+
+Route::group(array('prefix' => \Thor\I18n\Resolver::getCurrent()->code), function() {
+    Route::any('/', function(){
+        return \Thor\I18n\Resolver::getCurrent();
+    });
+    Route::any('{slug}', function(){
+        return \Thor\I18n\Resolver::getCurrent();
+    })->where('slug', '.*');
+});
+```
