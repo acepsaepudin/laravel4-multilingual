@@ -1,11 +1,12 @@
 <?php
 
-namespace Mjolnic\Language;
+namespace Thor\I18n;
 
 /**
  * @property int $id
  * @property string $name
  * @property string $code
+ * @property string $fullcode
  * @property string $locale
  * @property boolean $is_active
  * @property int $sorting
@@ -22,21 +23,33 @@ class Language extends \Eloquent {
         'code' => 'required|unique:languages'
     );
 
+    /**
+     * 
+     * @return Language[]
+     */
     public static function scopeSorted($query) {
         return $query->orderBy('sorting', 'asc');
     }
 
+    /**
+     * 
+     * @return Language[]
+     */
     public static function scopeActive($query) {
         return $query->where('is_active', '=', 1);
     }
 
+    /**
+     * 
+     * @return Language[]
+     */
     public static function scopeByCode($query, $code) {
         return $query->whereRaw('(code=?)', array($code));
     }
 
     /**
      * 
-     * @return \Model\Lang[]
+     * @return Language[]
      */
     public static function scopeToAssoc($query) {
         $langs = $query->get();

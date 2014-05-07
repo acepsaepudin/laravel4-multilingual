@@ -1,11 +1,13 @@
 {
-    "name": "mjolnic/language",
-    "description": "Multilingual features for Laravel 4",
+    "name": "thor/i18n",
+    "description": "Laravel 4 Multilingual route support",
     "keywords": ["i18n", "laravel", "multilingual", "translation", "language", "locale"],
     "authors": [
         {
             "name": "Javier Aguilar",
-            "email": "mjolnic@gmail.com"
+            "email": "mjolnic@gmail.com",
+            "homepage": "http://www.mjolnic.com/",
+            "role": "Developer"
         }
     ],
     "require": {
@@ -17,7 +19,7 @@
             "src/migrations"
         ],
         "psr-0": {
-            "Mjolnic\\Language\\": "src/"
+            "Thor\\I18n\\": "src/"
         }
     },
     "minimum-stability": "stable"

@@ -1,10 +1,10 @@
 <?php
 
-namespace Mjolnic\Language;
+namespace Thor\I18n;
 
 use Illuminate\Support\ServiceProvider;
 
-class LanguageServiceProvider extends ServiceProvider {
+class I18nServiceProvider extends ServiceProvider {
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -19,7 +19,7 @@ class LanguageServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        $this->package('mjolnic/language', 'i18n');
+        $this->package('thor/i18n', 'i18n');
     }
 
     /**

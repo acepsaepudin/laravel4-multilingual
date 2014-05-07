@@ -1,6 +1,10 @@
 <?php
 
-namespace Mjolnic\Language;
+namespace Thor\I18n;
+
+use App,
+    View,
+    Config;
 
 class Resolver {
 
@@ -22,9 +26,9 @@ class Resolver {
      * 
      * @param Language $current
      */
-    public static function setCurrent($current) {
+    public static function setCurrent(Language $current) {
         self::$current = $current;
-        \View::share('i18n_current_language', $current);
+        View::share('language', $current);
     }
 
     /**
@@ -32,8 +36,8 @@ class Resolver {
      * @param string $locale
      */
     public static function setLocale($locale) {
-        \Config::set('app.locale', $locale);
-        \App::setLocale($locale);
+        Config::set('app.locale', $locale);
+        App::setLocale($locale);
         setlocale(LC_ALL, $locale . '.utf8', $locale);
     }
 
@@ -47,9 +51,9 @@ class Resolver {
         if ($useDatabase === true) {
             $activeLangs = Language::sorted()->active()->get();
             if (count($activeLangs) > 0) {
-                \Config::set('i18n::default_locale', $activeLangs[0]->code);
-                \Config::set('i18n::locales', array_pluck($activeLangs, 'locale', 'code'));
-                $currentCode = self::fromRequest($routeSegment);
+                Config::set('i18n::default_language', $activeLangs[0]->code);
+                Config::set('i18n::languages', array_pluck($activeLangs, 'locale', 'code'));
+                $currentCode = self::fromRouteOrHeader($routeSegment);
                 foreach ($activeLangs as $ln) {
                     if ($ln->code == $currentCode) {
                         self::setCurrent($ln);
@@ -59,11 +63,11 @@ class Resolver {
                 }
             }
         } else {
-            $activeLangs = \Config::get('i18n::languages');
-            $currentCode = self::fromRequest($routeSegment);
+            $activeLangs = Config::get('i18n::languages');
+            $currentCode = self::fromRouteOrHeader($routeSegment);
             foreach ($activeLangs as $code => $locale) {
                 if ($code == $currentCode) {
-                    self::setCurrent(new Language(array('name'=>$code, 'code'=>$code, 'locale'=>$locale)));
+                    self::setCurrent(new Language(array('name' => $code, 'code' => $code, 'locale' => $locale)));
                     self::setLocale($locale);
                     break;
                 }
@@ -73,20 +77,40 @@ class Resolver {
     }
 
     /**
-     * Resolves language code from current request (route segment or http header)
+     * Resolves language code from current request (route segment or HTTP_ACCEPT_LANGUAGE header as fallback)
      * @param int $routeSegment Route segment index, 1 by default
      * @return string
      */
-    public static function fromRequest($routeSegment = 1) {
-        $language = self::fromRouteSegment($routeSegment, self::fromHttpHeader('HTTP_ACCEPT_LANGUAGE', false));
+    public static function fromRouteOrHeader($routeSegment = 1) {
+        $language = self::fromRoute($routeSegment, self::fromHeader('HTTP_ACCEPT_LANGUAGE', false));
         if ($language === null) {
-            $language = self::fromHttpHeader('HTTP_ACCEPT_LANGUAGE', false);
+            $language = self::fromHeader('HTTP_ACCEPT_LANGUAGE', false);
         }
 
-        if (($language == false) or (!in_array($language, array_keys(\Config::get('i18n::languages'))))) {
-            \Event::fire('i18n::invalid_route_language', array($language, \Config::get('i18n::default_language')), false);
+        if (($language == false) or ( !in_array($language, array_keys(Config::get('i18n::languages'))))) {
+            \Event::fire('i18n::invalid', array($language, Config::get('i18n::default_language')), false);
         }
 
+        return $language;
+    }
+
+    /**
+     * Resolves language code from the given route segment index
+     * @param type $routeSegment Route segment index, 1 by default
+     * @param type $default
+     * @return string
+     */
+    public static function fromRoute($routeSegment = 1, $default = false) {
+        $language = $default;
+        if (\Request::segment($routeSegment) !== null) {
+            $routeLanguage = \Request::segment($routeSegment);
+            if (in_array($routeLanguage, array_keys(Config::get('i18n::languages')))) {
+                $language = $routeLanguage;
+            }
+        } else {
+            // empty route
+            $language = null;
+        }
         return $language;
     }
 
@@ -96,28 +120,8 @@ class Resolver {
      * @param mixed $default
      * @return string
      */
-    public static function fromHttpHeader($header = 'HTTP_ACCEPT_LANGUAGE', $default = false) {
+    public static function fromHeader($header = 'HTTP_ACCEPT_LANGUAGE', $default = false) {
         return substr(\Request::server($header, $default), 0, 2);
-    }
-
-    /**
-     * Resolves language code from the given route segment index
-     * @param type $routeSegment Route segment index, 1 by default
-     * @param type $default
-     * @return string
-     */
-    public static function fromRouteSegment($routeSegment = 1, $default = false) {
-        $language = $default;
-        if (\Request::segment($routeSegment) !== null) {
-            $routeLanguage = \Request::segment($routeSegment);
-            if (in_array($routeLanguage, array_keys(\Config::get('i18n::languages')))) {
-                $language = $routeLanguage;
-            }
-        } else {
-            // empty route
-            $language = null;
-        }
-        return $language;
     }
 
 }

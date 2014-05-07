@@ -1,23 +1,23 @@
-mjolnic/language
+thor/i18n
 ===========
 
-Multilingual features for Laravel 4
+Laravel 4 Multilingual route support and more:
 
-* Locale and languague autodetection (based on URI segment or User Agent)
-* Language model and migration
+* Locale and language autodetection (based on URI segment or User Agent)
+* Language model, migration and seeder
 * Multilingual route support
 
 ## Setup
 
 In the `require` key of `composer.json` file of your project add the following
 
-    "mjolnic/language": "dev-master"
+    "thor/i18n": "dev-master"
 
 Run the Composer update comand
 
     $ composer update
 
-In your `config/app.php` add `'Mjolnic\Language\LanguageServiceProvider'` to the end of the `$providers` array
+In your `config/app.php` add `'Thor\I18n\I18nServiceProvider'` to the end of the `$providers` array
 it will bind the required route for you.
 
 ```php
@@ -26,7 +26,7 @@ it will bind the required route for you.
     'Illuminate\Foundation\Providers\ArtisanServiceProvider',
     'Illuminate\Auth\AuthServiceProvider',
     ...
-    'Mjolnic\Language\LanguageServiceProvider',
+    'Thor\I18n\I18nServiceProvider',
 
 ),
 ```
@@ -36,7 +36,7 @@ it will bind the required route for you.
 In your app/start/global.php file or somewhere in your code add the following:
 
 ```php
-\Mjolnic\Language\Resolver::resolve();
+\Thor\I18n\Resolver::resolve();
 ```
 
 The resolve method accepts 2 parameters: 
@@ -45,12 +45,12 @@ The resolve method accepts 2 parameters:
 * $useDatabase: Whether to rely on the database languages or not (by default, the package config languages will be used)
 
 
-## Database migration
+## Database migration (optional)
 
 In order to use the languages stored in the database, you must run the package migrations first. Seeding is optional.
 
-    $ php artisan migrate --package="mjolnic/language"
-    $ php artisan db:seed --class="Mjolnic\Language\Seeder"
+    $ php artisan migrate --package="thor/i18n"
+    $ php artisan db:seed --class="Thor\I18n\Seeder"
 
 ## Enabling multilingual routes
 
@@ -58,7 +58,12 @@ In your routes.php, put your multilingual routes inside a Route group
 with the same prefix as the current language code:
 
 ```php
-Route::group(array('prefix' => \Mjolnic\Language\Resolver::getCurrent()->code), function() {
+Route::group(array('prefix' => \Thor\I18n\Resolver::getCurrent()->code), function() {
     // Multilingual routes here
 });
 ```
+
+## How it works
+* 
+* A variable called `$language`, instance of `\Thor\I18n\Language`, will be always shared through all views.
+* If an invalid language is passed in the route, the `i18n::invalid` event is fired.
