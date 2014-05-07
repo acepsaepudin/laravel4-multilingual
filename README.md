@@ -15,7 +15,7 @@ In the `require` key of `composer.json` file of your project add the following
 
 Run the Composer update comand
 
-    $ composer update
+    composer update
 
 In your `config/app.php` add `'Thor\I18n\I18nServiceProvider'` to the end of the `$providers` array
 it will bind the required route for you.
