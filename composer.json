@@ -1,5 +1,5 @@
 {
-    "name": "thor/i18n",
+    "name": "thorfw/i18n",
     "description": "Laravel 4 Multilingual route support",
     "keywords": ["i18n", "laravel", "multilingual", "translation", "language", "locale"],
     "authors": [
