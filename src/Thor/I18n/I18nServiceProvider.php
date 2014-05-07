@@ -20,6 +20,7 @@ class I18nServiceProvider extends ServiceProvider {
      */
     public function boot() {
         $this->package('thor/i18n', 'i18n');
+        \Thor\I18n\Resolver::resolve();
     }
 
     /**

@@ -31,20 +31,6 @@ it will bind the required route for you.
 ),
 ```
 
-## Enabling language autodetection
-
-In your app/start/global.php file or somewhere in your code add the following:
-
-```php
-\Thor\I18n\Resolver::resolve();
-```
-
-The resolve method accepts 2 parameters: 
-
-* $routeSegment: Route segment index, 1 by default
-* $useDatabase: Whether to rely on the database languages or not (by default, the package config languages will be used)
-
-
 ## Database migration (optional)
 
 In order to use the languages stored in the database, you must run the package migrations first. Seeding is optional.
@@ -64,6 +50,9 @@ Route::group(array('prefix' => \Thor\I18n\Resolver::getCurrent()->code), functio
 ```
 
 ## How it works
-* 
-* A variable called `$language`, instance of `\Thor\I18n\Language`, will be always shared through all views.
+* When the package is booted, it looks for a matching language against the current 
+route segments or the HTTP_ACCEPT_LANGUAGE header as a fallback.
+* If you specified in the config that you want to use a database, the i18n config 
+languages and default_language are retrieved and overriden from the languages table.
 * If an invalid language is passed in the route, the `i18n::invalid` event is fired.
+* A variable called `$language`, instance of the `\Thor\I18n\Language` model, will be always shared through all views.

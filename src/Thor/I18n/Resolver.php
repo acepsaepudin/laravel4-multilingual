@@ -43,12 +43,11 @@ class Resolver {
 
     /**
      * 
-     * @param int $routeSegment Route segment index, 1 by default
-     * @param boolean $useDatabase Whether to rely on the database languages or the config ones only (false by default)
+     * @param int $routeSegment Route segment index, leave it null to read from the config
      * @return Language
      */
-    public static function resolve($routeSegment = 1, $useDatabase = false) {
-        if ($useDatabase === true) {
+    public static function resolve($routeSegment = null) {
+        if (Config::get('i18n::use_database') === true) {
             $activeLangs = Language::sorted()->active()->get();
             if (count($activeLangs) > 0) {
                 Config::set('i18n::default_language', $activeLangs[0]->code);
@@ -78,10 +77,10 @@ class Resolver {
 
     /**
      * Resolves language code from current request (route segment or HTTP_ACCEPT_LANGUAGE header as fallback)
-     * @param int $routeSegment Route segment index, 1 by default
+     * @param int $routeSegment Route segment index, leave it null to read from the config
      * @return string
      */
-    public static function fromRouteOrHeader($routeSegment = 1) {
+    public static function fromRouteOrHeader($routeSegment = null) {
         $language = self::fromRoute($routeSegment, self::fromHeader('HTTP_ACCEPT_LANGUAGE', false));
         if ($language === null) {
             $language = self::fromHeader('HTTP_ACCEPT_LANGUAGE', false);
@@ -96,12 +95,13 @@ class Resolver {
 
     /**
      * Resolves language code from the given route segment index
-     * @param type $routeSegment Route segment index, 1 by default
+     * @param type $routeSegment Route segment index, leave it null to read from the config
      * @param type $default
      * @return string
      */
-    public static function fromRoute($routeSegment = 1, $default = false) {
+    public static function fromRoute($routeSegment = null, $default = false) {
         $language = $default;
+        $routeSegment = ($routeSegment === null) ? Config::get('i18n::route_segment') : $routeSegment;
         if (\Request::segment($routeSegment) !== null) {
             $routeLanguage = \Request::segment($routeSegment);
             if (in_array($routeLanguage, array_keys(Config::get('i18n::languages')))) {
