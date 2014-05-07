@@ -53,13 +53,24 @@ class Resolver {
                 Config::set('i18n::default_language', $activeLangs[0]->code);
                 Config::set('i18n::languages', array_pluck($activeLangs, 'locale', 'code'));
                 $currentCode = self::fromRouteOrHeader($routeSegment);
+                $defaultLangCode = Config::get('i18n::default_language');
+                $defaultLang = null;
                 foreach ($activeLangs as $ln) {
                     if ($ln->code == $currentCode) {
                         self::setCurrent($ln);
                         self::setLocale($ln->locale);
                         break;
                     }
+                    if ($ln->code == $defaultLangCode) {
+                        $defaultLang = $ln;
+                    }
                 }
+                if (self::$current == null) {
+                    self::setCurrent($defaultLang);
+                    self::setLocale($defaultLang->code);
+                }
+            } else {
+                throw new \Exception('The database has no active languages.');
             }
         } else {
             $activeLangs = Config::get('i18n::languages');
@@ -71,6 +82,11 @@ class Resolver {
                     break;
                 }
             }
+            if (self::$current == null) {
+                $defaultLangCode = Config::get('i18n::default_language');
+                self::setCurrent(new Language(array('name' => $defaultLangCode, 'code' => $defaultLangCode, 'locale' => $activeLangs[$defaultLangCode])));
+                self::setLocale($activeLangs[$defaultLangCode]);
+            }
         }
         return self::$current;
     }
@@ -81,10 +97,12 @@ class Resolver {
      * @return string
      */
     public static function fromRouteOrHeader($routeSegment = null) {
-        $language = self::fromRoute($routeSegment, self::fromHeader('HTTP_ACCEPT_LANGUAGE', false));
+        $default = Config::get('i18n::use_header') ? self::fromHeader('HTTP_ACCEPT_LANGUAGE', false) : Config::get('i18n::default_language');
+        $language = self::fromRoute($routeSegment, $default);
         if ($language === null) {
-            $language = self::fromHeader('HTTP_ACCEPT_LANGUAGE', false);
+            $language = $default;
         }
+        dd($language . ' xx');
 
         if (($language == false) or ( !in_array($language, array_keys(Config::get('i18n::languages'))))) {
             \Event::fire('i18n::invalid', array($language, Config::get('i18n::default_language')), false);
