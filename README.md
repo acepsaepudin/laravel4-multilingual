@@ -17,8 +17,8 @@ Run the Composer update comand
 
     composer update
 
-In your `config/app.php` add `'Thor\I18n\I18nServiceProvider'` to the end of the `$providers` array
-it will bind the required route for you.
+In your `config/app.php` add `'Thor\I18n\I18nServiceProvider'` to the end of the `$providers` array.
+This will let your application to autodetect the language.
 
 ```php
 'providers' => array(
@@ -33,7 +33,7 @@ it will bind the required route for you.
 
 ## Database migration (optional)
 
-In order to use the languages stored in the database, you must run the package migrations first. Seeding is optional.
+In order to use the languages stored in the database, you must run the package migrations first. Seeding is also optional.
 
     php artisan migrate --package="thor/i18n"
     php artisan db:seed --class="Thor\I18n\Seeder"
