@@ -104,8 +104,9 @@ class Resolver {
             //if no language is specified in the url, use the default one
             $language = $default;
         }
-        if (($language == false) or ( !in_array($language, array_keys(Config::get('i18n::languages'))))) {
-            \App::abort(404);
+        $langs = array_keys(Config::get('i18n::languages'));
+        if (!in_array($language, $langs)) {
+            \Event::fire('i18n::invalid_language', array($language, in_array($default, $langs) ? $default : Config::get('i18n::default_language')), false);
         }
 
         return $language;

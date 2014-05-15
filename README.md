@@ -5,7 +5,7 @@ Laravel 4 Multilingual route support and more:
 
 * Locale and language autodetection (based on URI segment or User Agent)
 * Language model, migration and seeder
-* Multilingual route support
+* Multilingual and non-multilingual route support at the same time
 
 ## Setup
 
@@ -56,6 +56,8 @@ Route::group(array('prefix' => \Thor\I18n\Resolver::getCurrent()->code), functio
 route segments or the `HTTP_ACCEPT_LANGUAGE` header as a fallback (if use_header is true, disabled by default).
 * If no language matches the route or the header or they are empty, the `default_language` is used.
 * If an invalid language is passed in the route, a `NotFoundHttpException` is thrown.
+* If an invalid language is passed in the route, the `i18n::invalid_language` event is fired with
+two parameters: the not found language and the default_language.
 * If you specified in the config that you want to use a database, the i18n config 
 `languages` and `default_language` are retrieved and overriden from the languages table. Disabled by default.
 * A variable called `$language`, instance of the `\Thor\I18n\Language` model, will be always shared through all views.
@@ -71,6 +73,11 @@ To see how it works, use the following routes:
 // redirect them to the default one using a 302 redirect
 Route::get('/', function() {
     return Redirect::to(\Thor\I18n\Resolver::getCurrent()->code, 302);
+});
+
+// non-multilingual route
+Route::any('/hey/', function(){
+    return 'Hey, I\'m not a multilingual route!';
 });
 
 // specific route in spanish
@@ -96,6 +103,7 @@ Route::group(array('prefix' => \Thor\I18n\Resolver::getCurrent()->code), functio
 
 Try to navigate to these paths:
 * /             (should redirect to the default language)
+* /hey/
 * /es/
 * /en/
 * /es/hola/
