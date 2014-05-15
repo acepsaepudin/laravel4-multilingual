@@ -53,11 +53,11 @@ Route::group(array('prefix' => \Thor\I18n\Resolver::getCurrent()->code), functio
 
 ## How it works
 * When the package is booted, it looks for a matching language against the current 
-route segments or the HTTP_ACCEPT_LANGUAGE header as a fallback (if use_header is true, disabled by default).
-* If no language matches the route or the header, the default_language is used.
-* If an invalid language is passed in the route, the `i18n::invalid` event is fired.
+route segments or the `HTTP_ACCEPT_LANGUAGE` header as a fallback (if use_header is true, disabled by default).
+* If no language matches the route or the header or they are empty, the `default_language` is used.
+* If an invalid language is passed in the route, a `NotFoundHttpException` is thrown.
 * If you specified in the config that you want to use a database, the i18n config 
-languages and default_language are retrieved and overriden from the languages table. Disabled by default.
+`languages` and `default_language` are retrieved and overriden from the languages table. Disabled by default.
 * A variable called `$language`, instance of the `\Thor\I18n\Language` model, will be always shared through all views.
 
 

@@ -97,14 +97,15 @@ class Resolver {
      * @return string
      */
     public static function fromRouteOrHeader($routeSegment = null) {
-        $default = Config::get('i18n::use_header') ? self::fromHeader('HTTP_ACCEPT_LANGUAGE', false) : Config::get('i18n::default_language');
-        $language = self::fromRoute($routeSegment, $default);
+        $default = Config::get('i18n::use_header') ? self::fromHeader('HTTP_ACCEPT_LANGUAGE') : Config::get('i18n::default_language');
+        $language = self::fromRoute($routeSegment, null);
+
         if ($language === null) {
+            //if no language is specified in the url, use the default one
             $language = $default;
         }
-
         if (($language == false) or ( !in_array($language, array_keys(Config::get('i18n::languages'))))) {
-            \Event::fire('i18n::invalid', array($language, Config::get('i18n::default_language')), false);
+            \App::abort(404);
         }
 
         return $language;
@@ -112,21 +113,14 @@ class Resolver {
 
     /**
      * Resolves language code from the given route segment index
-     * @param type $routeSegment Route segment index, leave it null to read from the config
-     * @param type $default
+     * @param string $routeSegment Route segment index, leave it null to read from the config
      * @return string
      */
-    public static function fromRoute($routeSegment = null, $default = false) {
-        $language = $default;
+    public static function fromRoute($routeSegment = null) {
+        $language = null;
         $routeSegment = ($routeSegment === null) ? Config::get('i18n::route_segment') : $routeSegment;
         if (\Request::segment($routeSegment) !== null) {
-            $routeLanguage = \Request::segment($routeSegment);
-            if (in_array($routeLanguage, array_keys(Config::get('i18n::languages')))) {
-                $language = $routeLanguage;
-            }
-        } else {
-            // empty route
-            $language = null;
+            return \Request::segment($routeSegment);
         }
         return $language;
     }
@@ -134,11 +128,10 @@ class Resolver {
     /**
      * Resolves language code from a http header
      * @param string $header Header name, HTTP_ACCEPT_LANGUAGE by default
-     * @param mixed $default
      * @return string
      */
-    public static function fromHeader($header = 'HTTP_ACCEPT_LANGUAGE', $default = false) {
-        return substr(\Request::server($header, $default), 0, 2);
+    public static function fromHeader($header = 'HTTP_ACCEPT_LANGUAGE') {
+        return substr(\Request::server($header, null), 0, 2);
     }
 
 }
