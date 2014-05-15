@@ -63,7 +63,7 @@ languages and default_language are retrieved and overriden from the languages ta
 
 ## Demo
 
-To test that it works, use the following routes, to display the current language information:
+To see how it works, use the following routes:
 
 ```php
 <?php
@@ -95,7 +95,7 @@ Route::group(array('prefix' => \Thor\I18n\Resolver::getCurrent()->code), functio
 ```
 
 Try to navigate to these paths:
-* /
+* /             (should redirect to the default language)
 * /es/
 * /en/
 * /es/hola/
@@ -103,4 +103,4 @@ Try to navigate to these paths:
 * /en/hello/
 * /en/foo/
 * /es/foo/
-* /foo/    (NotFoundHttpException)
+* /foo/         (NotFoundHttpException)
