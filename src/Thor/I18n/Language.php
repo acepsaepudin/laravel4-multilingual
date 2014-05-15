@@ -6,7 +6,6 @@ namespace Thor\I18n;
  * @property int $id
  * @property string $name
  * @property string $code
- * @property string $fullcode
  * @property string $locale
  * @property boolean $is_active
  * @property int $sorting
