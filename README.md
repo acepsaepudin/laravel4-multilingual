@@ -66,17 +66,41 @@ languages and default_language are retrieved and overriden from the languages ta
 To test that it works, use the following routes, to display the current language information:
 
 ```php
-Route::get('/', function()
-{
-    return \Thor\I18n\Resolver::getCurrent();
+<?php
+// When users hit a route without a language,
+// redirect them to the default one using a 302 redirect
+Route::get('/', function() {
+    return Redirect::to(\Thor\I18n\Resolver::getCurrent()->code, 302);
 });
 
+// specific route in spanish
+Route::any('/es/hola/', function(){
+    return 'Hola mundo!';
+});
+
+// specific route in english
+Route::any('/en/hello/', function(){
+    return 'Hello world!';
+});
+
+// all other routes that share the same path, common in all languages
 Route::group(array('prefix' => \Thor\I18n\Resolver::getCurrent()->code), function() {
     Route::any('/', function(){
-        return \Thor\I18n\Resolver::getCurrent();
+        return 'Homepage in '.\Thor\I18n\Resolver::getCurrent()->code;
     });
-    Route::any('{slug}', function(){
-        return \Thor\I18n\Resolver::getCurrent();
-    })->where('slug', '.*');
+    Route::any('/foo/', function(){
+        return 'Foo page in '.\Thor\I18n\Resolver::getCurrent()->code;
+    });
 });
 ```
+
+Try to navigate to these paths:
+* /
+* /es/
+* /en/
+* /es/hola/
+* /es/hello/    (this should throw a NotFoundHttpException)
+* /en/hello/
+* /en/foo/
+* /es/foo/
+* /foo/    (NotFoundHttpException)
