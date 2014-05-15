@@ -1,4 +1,4 @@
-thorfw/language
+thor/language
 =====
 
 Laravel 4 Multilingual route support and more:
@@ -11,7 +11,7 @@ Laravel 4 Multilingual route support and more:
 
 In the `require` key of `composer.json` file of your project add the following
 
-    "thorfw/language": "dev-master"
+    "thor/language": "dev-master"
 
 Run the Composer update comand
 
@@ -35,7 +35,7 @@ This will let your application to autodetect the language.
 
 In order to use the languages stored in the database, you must run the package migrations first. Seeding is also optional.
 
-    php artisan migrate --package="thorfw/language"
+    php artisan migrate --package="thor/language"
     php artisan db:seed --class="Thor\Language\LanguageSeeder"
 
 Then change `'use_database'` to true.
