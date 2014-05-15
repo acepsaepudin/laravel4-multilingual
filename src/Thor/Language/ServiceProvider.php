@@ -17,7 +17,7 @@ class LanguageServiceProvider extends \Illuminate\Support\ServiceProvider {
      * @return void
      */
     public function boot() {
-        $this->package('thorfw/language', 'language');
+        $this->package('thor/language', 'language');
         Resolver::resolve();
     }
 

@@ -1,6 +1,6 @@
 {
-    "name": "thorfw/language",
-    "description": "Laravel 4 Multilingual route support",
+    "name": "thor/language",
+    "description": "Laravel 4 multilingual features. Laravel language package.",
     "keywords": ["i18n", "laravel", "multilingual", "translation", "language", "locale"],
     "authors": [
         {
