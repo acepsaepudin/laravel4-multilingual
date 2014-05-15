@@ -7,6 +7,9 @@ Laravel 4 Multilingual route support and more:
 * Language model, migration and seeder
 * Multilingual and non-multilingual route support at the same time
 
+IMPORTANT: Even though there are 1.x tags, they are not ready for production as the library is changing very fast.
+Only tags from 2.0+ will be considered stable enough.
+
 ## Setup
 
 In the `require` key of `composer.json` file of your project add the following
@@ -33,12 +36,12 @@ This will let your application to autodetect the language.
 
 ## Database migration (optional)
 
-In order to use the languages stored in the database, you must run the package migrations first. Seeding is also optional.
+In order to use the languages stored in a database, you must run the package migrations first. Seeding is also optional.
 
     php artisan migrate --package="thor/language"
     php artisan db:seed --class="Thor\Language\LanguageSeeder"
 
-Then change `'use_database'` to true.
+Then change `use_database` to `true` in the config file.
 
 ## Enabling multilingual routes
 
@@ -52,14 +55,13 @@ Route::group(array('prefix' => thor_language()->code), function() {
 ```
 
 ## How it works
-* When the package is booted, it looks for a matching language against the current 
-route segments or the `HTTP_ACCEPT_LANGUAGE` header as a fallback (if use_header is true, disabled by default).
-* If no language matches the route or the header or they are empty, the `language::fallback_locale` is used.
-* If an invalid language is passed in the route, a `NotFoundHttpException` is thrown.
+* When the package is booted, it looks for a matching language against the 
+route segment specified in the config file (as `route_segment`) or the `HTTP_ACCEPT_LANGUAGE` header as a fallback (if `use_header` is true, disabled by default).
+* If no language matches the route or the header, or they are empty, the `language::default_language` is used.
 * If an invalid language is passed in the route, the `language::invalid_language` event is fired with
 two parameters: the not found language and the default language.
-* If you specified in the config that you want to use a database, the language config 
-`language::locales` and `language::fallback_locale` are retrieved and overriden from the languages table. Disabled by default.
+* If you specified in the config that you want to use a database, the values of 
+`language::languages` and `language::default_language` will be retrieved from the languages table and then overriden inside these variables. Disabled by default.
 * A variable called `$language`, instance of the `\Thor\Language\Language` model, will be always shared through all views.
 
 
