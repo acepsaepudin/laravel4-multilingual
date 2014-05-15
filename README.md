@@ -102,6 +102,7 @@ Route::group(array('prefix' => thor_language()->code), function() {
 ```
 
 Try to navigate to these paths:
+
     * /             (should redirect to the default language)
     * /hey/
     * /es/
