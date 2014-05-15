@@ -1,6 +1,6 @@
 <?php
 
-namespace Thor\I18n;
+namespace Thor\Language;
 
 class Seeder extends \Seeder {
 

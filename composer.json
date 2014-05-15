@@ -1,5 +1,5 @@
 {
-    "name": "thorfw/i18n",
+    "name": "thorfw/language",
     "description": "Laravel 4 Multilingual route support",
     "keywords": ["i18n", "laravel", "multilingual", "translation", "language", "locale"],
     "authors": [
@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.3.3",
         "illuminate/support": "4.1.*"
     },
     "autoload": {
@@ -19,8 +19,11 @@
             "src/migrations"
         ],
         "psr-0": {
-            "Thor\\I18n\\": "src/"
-        }
+            "Thor\\Language": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "minimum-stability": "stable"
 }

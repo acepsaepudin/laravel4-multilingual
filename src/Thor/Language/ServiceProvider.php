@@ -1,10 +1,8 @@
 <?php
 
-namespace Thor\I18n;
+namespace Thor\Language;
 
-use Illuminate\Support\ServiceProvider;
-
-class I18nServiceProvider extends ServiceProvider {
+class LanguageServiceProvider extends \Illuminate\Support\ServiceProvider {
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -19,8 +17,8 @@ class I18nServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        $this->package('thorfw/i18n', 'i18n');
-        \Thor\I18n\Resolver::resolve();
+        $this->package('thorfw/language', 'language');
+        Resolver::resolve();
     }
 
     /**

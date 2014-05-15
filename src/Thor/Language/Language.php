@@ -1,12 +1,12 @@
 <?php
 
-namespace Thor\I18n;
+namespace Thor\Language;
 
 /**
  * @property int $id
  * @property string $name
- * @property string $code
- * @property string $locale
+ * @property string $code International language code with 2 letter (ISO 639-1) or 3 letter (ISO 639-2, ISO 639-3 or ISO 639-5)
+ * @property string $locale International locale code in the format [language[_territory][.codeset][@modifier]]<br> e.g. : en_US, en_AU.UTF-8
  * @property boolean $is_active
  * @property int $sorting
  */
@@ -21,6 +21,28 @@ class Language extends \Eloquent {
         'name' => 'required',
         'code' => 'required|unique:languages'
     );
+
+    /**
+     * Current language
+     * @var Language|null
+     */
+    protected static $current = null;
+
+    /**
+     * Returns the current resolved language code
+     * @return Language|null
+     */
+    public static function getCurrent() {
+        return self::$current;
+    }
+
+    /**
+     * 
+     * @param Language $current
+     */
+    public static function setCurrent(Language $current) {
+        self::$current = $current;
+    }
 
     /**
      * 
@@ -44,6 +66,14 @@ class Language extends \Eloquent {
      */
     public static function scopeByCode($query, $code) {
         return $query->whereRaw('(code=?)', array($code));
+    }
+
+    /**
+     * 
+     * @return Language[]
+     */
+    public static function scopeByLocale($query, $locale) {
+        return $query->whereRaw('(locale=?)', array($locale));
     }
 
     /**
