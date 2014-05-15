@@ -6,16 +6,7 @@ use App,
     View,
     Config;
 
-class Resolver extends \Facade {
-
-    /**
-     * Get the registered name of the component.
-     *
-     * @return string
-     */
-    protected static function getFacadeAccessor() {
-        return 'language_resolver';
-    }
+class LanguageResolver {
 
     /**
      * 
@@ -45,7 +36,7 @@ class Resolver extends \Facade {
      * @param \Thor\Language\Language $lang
      */
     protected function setCurrent(Language $lang) {
-        self::setCurrent($lang);
+        Language::setCurrent($lang);
         View::share('language', $lang);
     }
 
@@ -67,14 +58,14 @@ class Resolver extends \Facade {
                     $defaultLang = $ln;
                 }
             }
-            if ($this->current == null) {
+            if (Language::getCurrent() == null) {
                 self::setCurrent($defaultLang);
                 $this->setLocale($defaultLang->locale ? $defaultLang->locale : $defaultLang->code);
             }
         } else {
             throw new \Exception('The database has no active languages.');
         }
-        return $this->current;
+        return Language::getCurrent();
     }
 
     protected function fromConfig($routeSegment = null) {
@@ -87,12 +78,12 @@ class Resolver extends \Facade {
                 break;
             }
         }
-        if ($this->current == null) {
+        if (Language::getCurrent() == null) {
             $defaultLangCode = Config::get('language::default_language');
             self::setCurrent(new Language(array('name' => $defaultLangCode, 'code' => $defaultLangCode, 'locale' => $activeLangs[$defaultLangCode])));
             $this->setLocale($activeLangs[$defaultLangCode]);
         }
-        return $this->current;
+        return Language::getCurrent();
     }
 
     /**

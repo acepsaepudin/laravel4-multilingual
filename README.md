@@ -36,7 +36,7 @@ This will let your application to autodetect the language.
 In order to use the languages stored in the database, you must run the package migrations first. Seeding is also optional.
 
     php artisan migrate --package="thorfw/language"
-    php artisan db:seed --class="Thor\Language\Seeder"
+    php artisan db:seed --class="Thor\Language\LanguageSeeder"
 
 Then change `'use_database'` to true.
 
@@ -102,13 +102,13 @@ Route::group(array('prefix' => thor_language()->code), function() {
 ```
 
 Try to navigate to these paths:
-* /             (should redirect to the default language)
-* /hey/
-* /es/
-* /en/
-* /es/hola/
-* /es/hello/    (this should throw a NotFoundHttpException)
-* /en/hello/
-* /en/foo/
-* /es/foo/
-* /foo/         (NotFoundHttpException)
+    * /             (should redirect to the default language)
+    * /hey/
+    * /es/
+    * /en/
+    * /es/hola/
+    * /es/hello/    (this should throw a NotFoundHttpException)
+    * /en/hello/
+    * /en/foo/
+    * /es/foo/
+    * /foo/         (NotFoundHttpException)
