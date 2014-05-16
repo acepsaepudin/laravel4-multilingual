@@ -71,7 +71,7 @@ class LanguageServiceProvider extends ServiceProvider {
         $app['config']->package('thor/language', __DIR__ . '/../config');
 
         $app->singleton('thor.language.translator', function ($app) {
-            return new Lang($app);
+            return new Translator($app);
         });
 
         $app->singleton('router', function ($app) {

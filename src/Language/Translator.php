@@ -85,7 +85,6 @@ class Translator extends \Illuminate\Translation\Translator {
         $this->language = $language;
         if ($setInternals === true) {
             $this->setInternalLocale($language->locale ? $language->locale : $language->code);
-            View::share('language', $language);
         }
     }
 
@@ -160,7 +159,8 @@ class Translator extends \Illuminate\Translation\Translator {
     }
 
     protected function resolveFromConfig($langCode) {
-        foreach ($this->getAvailableLocales() as $code => $locale) {
+        $availableLocales = $this->getAvailableLocales();
+        foreach ($availableLocales as $code => $locale) {
             if ($code == $langCode) {
                 $this->setLanguage(new Language(array('name' => $code, 'code' => $code, 'locale' => $locale)), true);
                 break;
@@ -168,7 +168,7 @@ class Translator extends \Illuminate\Translation\Translator {
         }
         if ($this->language == null) {
             $fallbackLocale = $this->app['config']->get('app.fallback_locale');
-            $this->setLanguage(new Language(array('name' => $fallbackLocale, 'code' => $fallbackLocale, 'locale' => $activeLangs[$fallbackLocale])), true);
+            $this->setLanguage(new Language(array('name' => $fallbackLocale, 'code' => $fallbackLocale, 'locale' => $availableLocales[$fallbackLocale])), true);
         }
         return $this->language;
     }

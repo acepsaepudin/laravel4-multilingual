@@ -1,5 +1,7 @@
 <?php
 
+namespace Thor\Language;
+
 use Illuminate\Routing\UrlGenerator as IlluminateUrlGenerator;
 
 /**
