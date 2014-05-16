@@ -1,7 +1,7 @@
 thor/language
 =====
 
-Laravel 4 Multilingual route support and more:
+Laravel 4 multilingual features, based in [Polyglot](https://github.com/Anahkiasen/polyglot/)
 
 * Locale and language autodetection (based on URI segment or User Agent)
 * Optional language model, migration and seeder
@@ -32,6 +32,8 @@ This will let your application to autodetect the language.
 
 ),
 ```
+
+Publish config to your laravel app : `php artisan config:publish thor/language`
 
 ## Database migration (optional)
 
@@ -66,9 +68,9 @@ two parameters: the invalid language segment and the fallback locale.
 `language::available_languages` and `fallback_locale` will be retrieved from the languages table and then overriden inside these variables. Disabled by default.
 
 
-## Demo
+## Demos
 
-To see how it works, use the following routes:
+### Routes
 
 ```php
 <?php
