@@ -95,15 +95,26 @@ Route::any('/en/hello/', function(){
 
 // all other routes that share the same path, common in all languages
 Route::langGroup(function() {
-    Route::any('/', function(){
+    Route::get('/', function(){
         return 'Homepage in '.Lang::code();
     });
-    Route::any('/foo/', function(){
+    Route::get('/foo/', function(){
         return 'Foo page in '.Lang::code();
     });
     // current Language model instance
-    Route::any('/info/', function(){
+    Route::get('/info/', function(){
         return Lang::language();
+    });
+});
+
+// example of how to use multilingual prefixed routes
+// this will generate routes like: en/account/ , en/account/login
+Route::langGroup(array('prefix'=>'account'), function() {
+    Route::get('/', function(){
+        return 'Account home';
+    });
+    Route::get('/login/', function(){
+        return 'Login page';
     });
 });
 ```
@@ -121,4 +132,4 @@ Try to navigate to these paths:
     /es/foo/
     /foo/         (NotFoundHttpException)
     /es/info/
-    /en/info/
+    /en/account/login/
