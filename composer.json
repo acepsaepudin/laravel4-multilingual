@@ -2,24 +2,24 @@
     "name": "thor/language",
     "description": "Laravel 4 multilingual features. Laravel language package.",
     "keywords": ["i18n", "laravel", "multilingual", "translation", "language", "locale"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Javier Aguilar",
-            "email": "mjolnic@gmail.com",
             "homepage": "http://www.mjolnic.com/",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.7",
         "illuminate/support": "4.1.*"
     },
     "autoload": {
         "classmap": [
             "src/migrations"
         ],
-        "psr-0": {
-            "Thor\\Language": "src/"
+        "psr-4": {
+            "Thor\\Language\\": "src/Language"
         },
         "files": [
             "src/helpers.php"
