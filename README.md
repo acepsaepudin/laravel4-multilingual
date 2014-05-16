@@ -4,8 +4,10 @@ thor/language
 Laravel 4 Multilingual route support and more:
 
 * Locale and language autodetection (based on URI segment or User Agent)
-* Language model, migration and seeder
+* Optional language model, migration and seeder
 * Multilingual and non-multilingual route support at the same time
+* Lang, Route and URL facades are extended with useful multilingual methods like:
+`Lang::code()`, `Route::langGroup()`, `URL::langTo()`, ...
 
 ## Setup
 
@@ -43,21 +45,24 @@ Then change `use_database` to `true` in the config file.
 ## Enabling multilingual routes
 
 In your routes.php, put your multilingual routes inside a Route group
-with the same prefix as the current language code:
+with the same prefix as the current language code. This is accomplished with
+the a new function called `langGroup`:
 
 ```php
-Route::group(array('prefix' => Lang::code()), function() {
+Route::langGroup(function() {
     // Multilingual routes here
 });
 ```
 
 ## How it works
-* When the package is booted, it looks for a matching language against the 
-route segment specified in the config file (as `route_segment`) or the `HTTP_ACCEPT_LANGUAGE` header as a fallback (if `use_header` is true, disabled by default).
-* If no language matches the route or the header, or they are empty, the `fallback_locale` is used.
+* This package swaps the singleton instances of Lang, Route and URL facades for extending them with multilingual features.
+* When the package is booted, and `language::autoresolve` is `true` (enabled by default), it looks for a matching language against the 
+route segment specified in `language::route_segment` or the `HTTP_ACCEPT_LANGUAGE` header as a
+fallback (if `language::use_useragent` is true, disabled by default).
+* If no language matches the route segment or the header, or they are empty, the app config `fallback_locale` variable is used.
 * If an invalid language is passed in the route, the `language::invalid_language` event is fired with
-two parameters: the not found language and the default language.
-* If you specified in the config that you want to use a database, the values of 
+two parameters: the invalid language segment and the fallback locale.
+* If you specified in the config that you want to use a database in `language::use_database`, the values of 
 `language::available_languages` and `fallback_locale` will be retrieved from the languages table and then overriden inside these variables. Disabled by default.
 
 
@@ -89,7 +94,7 @@ Route::any('/en/hello/', function(){
 });
 
 // all other routes that share the same path, common in all languages
-Route::group(array('prefix' => Lang::code()), function() {
+Route::langGroup(function() {
     Route::any('/', function(){
         return 'Homepage in '.Lang::code();
     });
@@ -115,3 +120,5 @@ Try to navigate to these paths:
     /en/foo/
     /es/foo/
     /foo/         (NotFoundHttpException)
+    /es/info/
+    /en/info/

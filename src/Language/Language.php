@@ -3,6 +3,8 @@
 namespace Thor\Language;
 
 /**
+ * Model for the languages table
+ * 
  * @property int $id
  * @property string $name
  * @property string $code International language code with 2 letter (ISO 639-1) 

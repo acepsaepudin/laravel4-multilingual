@@ -20,10 +20,7 @@
         ],
         "psr-4": {
             "Thor\\Language\\": "src/Language"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
     "minimum-stability": "stable"
 }

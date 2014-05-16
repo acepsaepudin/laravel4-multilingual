@@ -40,8 +40,10 @@ class Translator extends \Illuminate\Translation\Translator {
         $this->language = null;
         $this->activeLanguages = new \Illuminate\Database\Eloquent\Collection(array());
 
-        if ($app['config']->get('language::autodetect') === true) {
+        if ($app['config']->get('language::autoresolve') === true) {
             $this->resolve();
+        } else {
+            $this->language = new Language(array('id' => -1, 'name' => $this->locale, 'code' => $this->locale, 'locale' => $this->locale));
         }
     }
 
@@ -160,15 +162,17 @@ class Translator extends \Illuminate\Translation\Translator {
 
     protected function resolveFromConfig($langCode) {
         $availableLocales = $this->getAvailableLocales();
+        $isFound = false;
         foreach ($availableLocales as $code => $locale) {
             if ($code == $langCode) {
-                $this->setLanguage(new Language(array('name' => $code, 'code' => $code, 'locale' => $locale)), true);
+                $isFound = true;
+                $this->setLanguage(new Language(array('id' => -1, 'name' => $code, 'code' => $code, 'locale' => $locale)), true);
                 break;
             }
         }
-        if ($this->language == null) {
+        if ($isFound === false) {
             $fallbackLocale = $this->app['config']->get('app.fallback_locale');
-            $this->setLanguage(new Language(array('name' => $fallbackLocale, 'code' => $fallbackLocale, 'locale' => $availableLocales[$fallbackLocale])), true);
+            $this->setLanguage(new Language(array('id' => -1, 'name' => $fallbackLocale, 'code' => $fallbackLocale, 'locale' => $availableLocales[$fallbackLocale])), true);
         }
         return $this->language;
     }
@@ -217,11 +221,4 @@ class Translator extends \Illuminate\Translation\Translator {
         return empty($code) ? null : $code;
     }
 
-    /* public function formatLocaleToCode($locale) {
-      return strtolower(preg_replace('/([-_].+)$/', '', $locale));
-      }
-
-      public function formatCodeToLocale($code) {
-      return $code . '_' . strtoupper($code);
-      } */
 }

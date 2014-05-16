@@ -22,6 +22,8 @@ class LanguageServiceProvider extends ServiceProvider {
     public function boot() {
         $this->package('thor/language', 'language');
         Facades\Lang::swap($this->app['thor.language.translator']);
+        Facades\Route::swap($this->app['thor.language.router']);
+        Facades\URL::swap($this->app['thor.language.url']);
     }
 
     /**
@@ -39,7 +41,7 @@ class LanguageServiceProvider extends ServiceProvider {
      * @return array
      */
     public function provides() {
-        return array('thor.language.translator', 'router', 'url');
+        return array('thor.language.translator', 'thor.language.router', 'thor.language.url');
     }
 
     /**
@@ -74,11 +76,11 @@ class LanguageServiceProvider extends ServiceProvider {
             return new Translator($app);
         });
 
-        $app->singleton('router', function ($app) {
+        $app->singleton('thor.language.router', function ($app) {
             return new Router($app['events'], $app);
         });
 
-        $app->singleton('url', function ($app) {
+        $app->singleton('thor.language.url', function ($app) {
             return new UrlGenerator($app['router']->getRoutes(), $app->rebinding('request', function ($app, $request) {
                         $app['url']->setRequest($request);
                     }));
