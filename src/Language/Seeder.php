@@ -2,7 +2,7 @@
 
 namespace Thor\Language;
 
-class LanguageSeeder extends \Seeder {
+class Seeder extends \Seeder {
 
     /**
      * Run the database seeds.

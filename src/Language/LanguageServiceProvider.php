@@ -2,14 +2,17 @@
 
 namespace Thor\Language;
 
-class LanguageServiceProvider extends \Illuminate\Support\ServiceProvider {
+use Illuminate\Container\Container;
+use Illuminate\Support\Facades;
+use Illuminate\Support\ServiceProvider;
 
+class LanguageServiceProvider extends ServiceProvider {
     /**
      * Indicates if loading of the provider is deferred.
      *
      * @var bool
      */
-    protected $defer = false;
+    //protected $defer = false;
 
     /**
      * Bootstrap the application events.
@@ -18,8 +21,7 @@ class LanguageServiceProvider extends \Illuminate\Support\ServiceProvider {
      */
     public function boot() {
         $this->package('thor/language', 'language');
-        $resolver = new LanguageResolver();
-        $resolver->resolve();
+        Facades\Lang::swap($this->app['thor.language.translator']);
     }
 
     /**
@@ -28,7 +30,7 @@ class LanguageServiceProvider extends \Illuminate\Support\ServiceProvider {
      * @return void
      */
     public function register() {
-        //
+        $this->app = $this->bindClasses($this->app);
     }
 
     /**
@@ -37,7 +39,52 @@ class LanguageServiceProvider extends \Illuminate\Support\ServiceProvider {
      * @return array
      */
     public function provides() {
-        return array();
+        return array('thor.language.translator', 'router', 'url');
+    }
+
+    /**
+     * Create a Polyglot container
+     *
+     * @param  Container $app
+     *
+     * @return Container
+     */
+    public static function make($app = null) {
+        if (!$app) {
+            $app = new Container;
+        }
+
+        // Bind classes
+        $provider = new static($app);
+        $app = $provider->bindClasses($app);
+
+        return $app;
+    }
+
+    /**
+     * Bind package classes to a Container
+     *
+     * @param  Container $app
+     * @return Container
+     */
+    public function bindClasses(Container $app) {
+        $app['config']->package('thor/language', __DIR__ . '/../config');
+
+        $app->singleton('thor.language.translator', function ($app) {
+            return new Lang($app);
+        });
+
+        $app->singleton('router', function ($app) {
+            return new Router($app['events'], $app);
+        });
+
+        $app->singleton('url', function ($app) {
+            return new UrlGenerator($app['router']->getRoutes(), $app->rebinding('request', function ($app, $request) {
+                        $app['url']->setRequest($request);
+                    }));
+        });
+
+        return $app;
     }
 
 }

@@ -5,8 +5,12 @@ namespace Thor\Language;
 /**
  * @property int $id
  * @property string $name
- * @property string $code International language code with 2 letter (ISO 639-1) or 3 letter (ISO 639-2, ISO 639-3 or ISO 639-5)
- * @property string $locale International locale code in the format [language[_territory][.codeset][@modifier]]<br> e.g. : en_US, en_AU.UTF-8
+ * @property string $code International language code with 2 letter (ISO 639-1) 
+ * or 3 letter (ISO 639-2, ISO 639-3 or ISO 639-5). It is used for URL segments.
+ * @property string $locale International locale code in
+ * the format [language[_territory][.codeset][@modifier]]
+ *  e.g. : en_US, en_AU.UTF-8 .<br>
+ * It is used for identify translation locales.
  * @property boolean $is_active
  * @property int $sorting
  */
