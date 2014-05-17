@@ -58,14 +58,14 @@ Route::langGroup(function() {
 
 ## How it works
 * This package swaps the singleton instances of Lang, Route and URL facades for extending them with multilingual features.
-* When the package is booted, and `language::autoresolve` is `true` (enabled by default), it looks for a matching language against the 
-route segment specified in `language::route_segment` or the `HTTP_ACCEPT_LANGUAGE` header as a
-fallback (if `language::use_useragent` is true, disabled by default).
+* When the package is booted, and `thor-language::autoresolve` is `true` (enabled by default), it looks for a matching language against the 
+route segment specified in `thor-language::route_segment` or the `HTTP_ACCEPT_LANGUAGE` header as a
+fallback (if `thor-language::use_useragent` is true, disabled by default).
 * If no language matches the route segment or the header, or they are empty, the app config `fallback_locale` variable is used.
-* If an invalid language is passed in the route, the `language::invalid_language` event is fired with
+* If an invalid language is passed in the route, the `thor-language::invalid_language` event is fired with
 two parameters: the invalid language segment and the fallback locale.
-* If you specified in the config that you want to use a database in `language::use_database`, the values of 
-`language::available_languages` and `fallback_locale` will be retrieved from the languages table and then overriden inside these variables. Disabled by default.
+* If you specified in the config that you want to use a database in `thor-language::use_database`, the values of 
+`thor-language::available_languages` and `fallback_locale` will be retrieved from the languages table and then overriden inside these variables. Disabled by default.
 
 
 ## Demos
