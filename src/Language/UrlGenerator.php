@@ -15,7 +15,7 @@ class UrlGenerator extends IlluminateUrlGenerator {
      * @return string
      */
     public function lang() {
-        return $this->request->segment($this->app['config']->get('thor-language::route_segment', 1));
+        return $this->request->segment($this->app['config']->get('language::route_segment', 1));
     }
 
     /**

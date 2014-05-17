@@ -40,7 +40,7 @@ class Translator extends \Illuminate\Translation\Translator {
         $this->language = null;
         $this->activeLanguages = new \Illuminate\Database\Eloquent\Collection(array());
 
-        if ($app['config']->get('thor-language::autoresolve') === true) {
+        if ($app['config']->get('language::autoresolve') === true) {
             $this->resolve();
         } else {
             $this->language = new Language(array('id' => -1, 'name' => $this->locale, 'code' => $this->locale, 'locale' => $this->locale));
@@ -72,11 +72,11 @@ class Translator extends \Illuminate\Translation\Translator {
     }
 
     public function resolve($routeSegment = null) {
-        return $this->resolveWith($this->resolveFromRequest(($routeSegment === null) ? $this->app['config']->get('thor-language::route_segment') : $routeSegment));
+        return $this->resolveWith($this->resolveFromRequest(($routeSegment === null) ? $this->app['config']->get('language::route_segment') : $routeSegment));
     }
 
     public function resolveWith($langCode) {
-        if ($this->app['config']->get('thor-language::use_database') === true) {
+        if ($this->app['config']->get('language::use_database') === true) {
             return $this->resolveFromDb($langCode);
         } else {
             return $this->resolveFromConfig($langCode);
@@ -111,7 +111,7 @@ class Translator extends \Illuminate\Translation\Translator {
      * @return array
      */
     public function getAvailableLocales() {
-        return $this->app['config']->get('thor-language::available_locales');
+        return $this->app['config']->get('language::available_locales');
     }
 
     /**
@@ -138,7 +138,7 @@ class Translator extends \Illuminate\Translation\Translator {
             // Set the first language as the fallback
             $this->app['config']->set('app.fallback_locale', $this->activeLanguages[0]->locale);
             // Override available locales
-            $this->app['config']->set('thor-language::available_locales', array_pluck($this->activeLanguages, 'locale', 'code'));
+            $this->app['config']->set('language::available_locales', array_pluck($this->activeLanguages, 'locale', 'code'));
             // Current fallback lang
             $fallbackLang = $this->activeLanguages[0]->code;
             $isFound = false;
@@ -183,7 +183,7 @@ class Translator extends \Illuminate\Translation\Translator {
      * @return string
      */
     protected function resolveFromRequest($routeSegment = null) {
-        $fallbackLangCode = $this->app['config']->get('thor-language::use_header') ? $this->resolveFromUserAgent() : null;
+        $fallbackLangCode = $this->app['config']->get('language::use_header') ? $this->resolveFromUserAgent() : null;
         $langCode = $this->resolveFromRoute($routeSegment);
 
         if ($langCode === null) {
@@ -191,7 +191,7 @@ class Translator extends \Illuminate\Translation\Translator {
             $langCode = $fallbackLangCode;
         }
         if (!$this->isValidCode($langCode)) {
-            $this->app['events']->fire('thor-language::invalid_language', array($langCode, $fallbackLangCode), false);
+            $this->app['events']->fire('language::invalid_language', array($langCode, $fallbackLangCode), false);
             // The following line is commented because we want the app to throw a NotFoundException
             // $langCode = null;
         }

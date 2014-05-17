@@ -20,7 +20,7 @@ class LanguageServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        $this->package('thor/language', 'thor-language');
+        $this->package('thor/language', 'language');
         Facades\Lang::swap($this->app['thor.language.translator']);
         Facades\Route::swap($this->app['thor.language.router']);
         Facades\URL::swap($this->app['thor.language.url']);
