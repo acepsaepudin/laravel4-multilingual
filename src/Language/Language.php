@@ -29,28 +29,6 @@ class Language extends \Eloquent {
     );
 
     /**
-     * Current language
-     * @var Language|null
-     */
-    protected static $current = null;
-
-    /**
-     * Returns the current resolved language code
-     * @return Language|null
-     */
-    public static function getCurrent() {
-        return self::$current;
-    }
-
-    /**
-     * 
-     * @param Language $current
-     */
-    public static function setCurrent(Language $current) {
-        self::$current = $current;
-    }
-
-    /**
      * 
      * @return Language[]
      */
