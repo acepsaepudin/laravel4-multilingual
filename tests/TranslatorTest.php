@@ -2,7 +2,7 @@
 
 namespace Thor\Language;
 
-class TranslatorTest extends BaseTestCase {
+class TranslatorTest extends PackageTestCase {
 
     public function testLangFacadeIsSwapped() {
         $this->assertArrayHasKey('translator', $this->app);

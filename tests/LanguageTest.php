@@ -6,7 +6,7 @@ namespace Thor\Language;
  * Language model test
  *
  */
-class LanguageTest extends BaseTestCase {
+class LanguageTest extends PackageTestCase {
 
     /**
      * Setup the test environment.
@@ -31,8 +31,11 @@ class LanguageTest extends BaseTestCase {
         $this->assertCount(2, Language::all());
     }
 
-    public function testFirstLanguage() {
-        $lang = Language::find(1);
+    /**
+     * @covers \Thor\Language\Language::scopeSorted
+     */
+    public function testScopeSorted() {
+        $lang = Language::sorted()->first();
         $this->assertInstanceOf('Thor\\Language\\Language', $lang);
         $this->assertEquals('es', $lang->code);
         $this->assertEquals('es_ES', $lang->locale);

@@ -2,7 +2,7 @@
 
 namespace Thor\Language;
 
-class UrlGeneratorTest extends BaseTestCase {
+class UrlGeneratorTest extends PackageTestCase {
 
     public function testURLFacadeIsSwapped() {
         $this->assertArrayHasKey('url', $this->app);

@@ -29,7 +29,7 @@
 
     <testsuites>
         <testsuite name="thor/language Test Suite">
-            <directory suffix=".php">tests</directory>
+            <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

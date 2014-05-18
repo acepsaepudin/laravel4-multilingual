@@ -1,14 +1,16 @@
 
 
 Code Coverage Report:     
-  2014-05-18 04:42:28     
+  2014-05-18 19:56:05     
                           
  Summary:                 
-  Classes:  0.00% (0/4)   
-  Methods: 38.46% (10/26) 
-  Lines:   54.37% (56/103)
+  Classes: 25.00% (1/4)   
+  Methods: 42.31% (11/26) 
+  Lines:   57.28% (59/103)
 
 \Thor\Language::Language
-  Methods:  80.00% ( 4/ 5)   Lines:  90.00% (  9/ 10)
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 10/ 10)
+\Thor\Language::Router
+  Methods:   0.00% ( 0/ 1)   Lines:  25.00% (  2/  8)
 \Thor\Language::Translator
   Methods:  35.29% ( 6/17)   Lines:  59.49% ( 47/ 79)

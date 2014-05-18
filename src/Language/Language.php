@@ -16,7 +16,7 @@ namespace Thor\Language;
  * @property boolean $is_active
  * @property int $sorting
  */
-class Language extends \Eloquent {
+class Language extends \Illuminate\Database\Eloquent\Model {
 
     /**
      *
