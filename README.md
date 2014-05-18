@@ -5,7 +5,7 @@ Laravel 4 multilingual features, based in [Polyglot](https://github.com/Anahkias
 
 [![Build Status](https://img.shields.io/travis/thorfw/language.svg)](https://travis-ci.org/thorfw/language)
 [![Total Downloads](http://img.shields.io/packagist/dt/thor/language.svg)](https://packagist.org/packages/thor/language)
-[![Latest Stable Version](https://img.shields.io/github/tag/thorfw/language.svg)](https://github.com/thorfw/language)
+[![Latest Stable Version](https://img.shields.io/github/tag/thorfw/language.svg)](https://github.com/thorfw/language/releases)
 [![Dependency Status](https://www.versioneye.com/php/thor:language/badge.svg)](https://www.versioneye.com/php/thor:language)
 
 * Locale and language autodetection (based on URI segment or User Agent)
