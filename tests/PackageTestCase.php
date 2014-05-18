@@ -25,6 +25,10 @@ abstract class PackageTestCase extends AppTestCase {
      */
     protected $translator;
 
+    protected function getPackageProviders() {
+        return array('Thor\\Language\\LanguageServiceProvider');
+    }
+
     /**
      * Define environment setup.
      *
@@ -52,20 +56,12 @@ abstract class PackageTestCase extends AppTestCase {
 
     protected function prepareRequest($path = '/', $method = 'GET', $query = array(), $post = array()) {
         parent::prepareRequest($path, $method, $query, $post);
+        // we need to resolve the language for each new request
         $this->translator->resolve();
     }
 
-    protected function getPackageProviders() {
-        return array('Thor\\Language\\LanguageServiceProvider');
-    }
-
     public function setUp() {
-        // No call to parent::setUp()
-        // From: Illuminate\Foundation\Testing\TestCase
-        $this->app = $this->createApplication();
-        $this->client = $this->createClient();
-
-        $this->app->boot();
+        parent::setUp();
 
         $this->router = $this->app['router'];
         $this->url = $this->app['url'];

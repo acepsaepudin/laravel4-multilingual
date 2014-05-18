@@ -7,9 +7,15 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Config\Repository as Config;
-use Illuminate\Foundation\Testing\TestCase as FoundationTestCase;
 
-abstract class AppTestCase extends FoundationTestCase {
+abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
+
+    public function setUp() {
+        // No call to parent::setUp() from Illuminate\Foundation\Testing\TestCase
+        $this->app = $this->createApplication();
+        $this->client = $this->createClient();
+        $this->app->boot();
+    }
 
     /**
      * Get application timezone.
