@@ -18,13 +18,13 @@ class LanguageTest extends BaseTestCase {
         $artisan = $this->app->make('artisan');
 
         // Migrate and seed
-        $artisan->call('migrate', [
+        $artisan->call('migrate', array(
             '--database' => 'testbench',
             '--path' => 'migrations',
-        ]);
-        $artisan->call('db:seed', [
+        ));
+        $artisan->call('db:seed', array(
             '--class' => 'Thor\\Language\\Seeder',
-        ]);
+        ));
     }
     
     public function testLanguagesTableHasTwoRecords(){
