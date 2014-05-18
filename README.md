@@ -4,7 +4,6 @@ thor/language
 Laravel 4 multilingual features, based in [Polyglot](https://github.com/Anahkiasen/polyglot/)
 
 [![Build Status](https://img.shields.io/travis/thorfw/language.svg)](https://travis-ci.org/thorfw/language)
-[![Coverage Status](https://img.shields.io/coveralls/thorfw/language.svg)](https://coveralls.io/r/thorfw/language)
 [![Total Downloads](http://img.shields.io/packagist/dt/thor/language.svg)](https://packagist.org/packages/thor/language)
 [![Latest Stable Version](https://img.shields.io/github/tag/thorfw/language.svg)](https://github.com/laravel/thorfw/language)
 [![Dependency Status](https://www.versioneye.com/php/thor:language/badge.svg)](https://www.versioneye.com/php/thor:language)
