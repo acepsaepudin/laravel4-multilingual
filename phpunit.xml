@@ -22,6 +22,7 @@
             <directory>src/Language</directory>
             <exclude>
                 <file>src/Language/LanguageServiceProvider.php</file>
+                <file>src/Language/Seeder.php</file>
             </exclude>
         </whitelist>
     </filter>

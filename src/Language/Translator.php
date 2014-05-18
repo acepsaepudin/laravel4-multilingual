@@ -172,7 +172,8 @@ class Translator extends \Illuminate\Translation\Translator {
         }
         if ($isFound === false) {
             $fallbackLocale = $this->app['config']->get('app.fallback_locale');
-            $this->setLanguage(new Language(array('id' => -1, 'name' => $fallbackLocale, 'code' => $fallbackLocale, 'locale' => $availableLocales[$fallbackLocale])), true);
+            $locale = isset($availableLocales[$fallbackLocale]) ? $availableLocales[$fallbackLocale] : $locale;
+            $this->setLanguage(new Language(array('id' => -1, 'name' => $fallbackLocale, 'code' => $fallbackLocale, 'locale' => $locale)), true);
         }
         return $this->language;
     }

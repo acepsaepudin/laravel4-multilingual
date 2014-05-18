@@ -1,10 +1,12 @@
 
 
-Code Coverage Report:    
-  2014-05-18 02:24:14    
-                         
- Summary:                
-  Classes:  0.00% (0/5)  
-  Methods:  0.00% (0/29) 
-  Lines:    0.00% (0/139)
+Code Coverage Report:     
+  2014-05-18 03:15:36     
+                          
+ Summary:                 
+  Classes:  0.00% (0/4)   
+  Methods: 21.43% (6/28)  
+  Lines:   44.34% (47/106)
 
+\Thor\Language::Translator
+  Methods:  35.29% ( 6/17)   Lines:  59.49% ( 47/ 79)
