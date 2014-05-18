@@ -2,6 +2,6 @@
 
 namespace Thor\Language;
 
-class RouterTest extends BaseTestCase {
+class SeederTest extends BaseTestCase {
     
 }

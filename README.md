@@ -3,10 +3,14 @@ thor/language
 
 Laravel 4 multilingual features, based in [Polyglot](https://github.com/Anahkiasen/polyglot/)
 
-[![Latest Stable Version](https://poser.pugx.org/thor/language/v/stable.png)](https://packagist.org/packages/thor/language)
+[![Build Status](https://travis-ci.org/thorfw/language.png)](https://travis-ci.org/thorfw/language)
+[![Coverage Status](https://img.shields.io/coveralls/thorfw/language.svg)](https://coveralls.io/r/thorfw/language)
 [![Total Downloads](https://poser.pugx.org/thor/language/downloads.png)](https://packagist.org/packages/thor/language)
-[![Latest Unstable Version](https://poser.pugx.org/thor/language/v/unstable.png)](https://packagist.org/packages/thor/language)
+[![Latest Stable Version](https://img.shields.io/github/tag/thorfw/language.svg)](https://github.com/laravel/thorfw/language)
+[![Dependency Status](https://www.versioneye.com/php/thor:language/badge.svg)](https://www.versioneye.com/php/thor:language)
 [![License](https://poser.pugx.org/thor/language/license.png)](https://packagist.org/packages/thor/language)
+[![License](https://poser.pugx.org/thor/language/license.png)](https://packagist.org/packages/thor/language)
+[![ProjectStatus](http://stillmaintained.com/thorfw/language.png)](http://stillmaintained.com/thorfw/language)
 
 * Locale and language autodetection (based on URI segment or User Agent)
 * Optional language model, migration and seeder
