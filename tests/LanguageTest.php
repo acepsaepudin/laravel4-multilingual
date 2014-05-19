@@ -6,24 +6,28 @@ namespace Thor\Language;
  * Language model test
  *
  */
-class LanguageTest extends PackageTestCase {
+class LanguageTest extends PackageTestCase
+{
 
     /**
      * Setup the test environment.
      */
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $this->prepareDatabase();
     }
 
-    public function testLanguagesTableHas5Records() {
+    public function testLanguagesTableHas5Records()
+    {
         $this->assertCount(5, Language::all());
     }
 
     /**
      * @covers \Thor\Language\Language::scopeSorted
      */
-    public function testScopeSorted() {
+    public function testScopeSorted()
+    {
         $lang = Language::sorted()->first();
         $this->assertInstanceOf('Thor\\Language\\Language', $lang);
         $this->assertEquals('en', $lang->code);
@@ -35,7 +39,8 @@ class LanguageTest extends PackageTestCase {
     /**
      * @covers \Thor\Language\Language::scopeActive
      */
-    public function testScopeActive() {
+    public function testScopeActive()
+    {
         $lang = Language::find(2);
         $lang->is_active = false;
         $lang->save();
@@ -48,7 +53,8 @@ class LanguageTest extends PackageTestCase {
     /**
      * @covers \Thor\Language\Language::scopeToAssoc
      */
-    public function testScopeToAssoc() {
+    public function testScopeToAssoc()
+    {
         $langs = Language::toAssoc();
         $this->assertCount(5, $langs);
         $this->assertArrayHasKey('es', $langs);
@@ -58,7 +64,8 @@ class LanguageTest extends PackageTestCase {
     /**
      * @covers \Thor\Language\Language::scopeByCode
      */
-    public function testScopeByCode() {
+    public function testScopeByCode()
+    {
         $lang = Language::byCode('en')->first();
         $this->assertInstanceOf('Thor\\Language\\Language', $lang);
         $this->assertEquals(1, $lang->id);
@@ -69,7 +76,8 @@ class LanguageTest extends PackageTestCase {
     /**
      * @covers \Thor\Language\Language::scopeByLocale
      */
-    public function testScopeByLocale() {
+    public function testScopeByLocale()
+    {
         $lang = Language::byLocale('es_ES')->first();
         $this->assertInstanceOf('Thor\\Language\\Language', $lang);
         $this->assertEquals(2, $lang->id);

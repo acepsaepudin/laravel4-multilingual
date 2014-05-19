@@ -2,13 +2,15 @@
 
 namespace Thor\Language;
 
-use Closure, Lang;
+use Closure,
+    Lang;
 use Illuminate\Routing\Router as IlluminateRouter;
 
 /**
  * A Router with multilingual features
  */
-class Router extends IlluminateRouter {
+class Router extends IlluminateRouter
+{
 
     /**
      * Create a route group with shared attributes, 
@@ -21,10 +23,11 @@ class Router extends IlluminateRouter {
      * @param  Closure|null     $callback
      * @return void
      */
-    public function langGroup($attributes, Closure $callback = null) {
-        if ($attributes instanceof Closure) {
+    public function langGroup($attributes, Closure $callback = null)
+    {
+        if($attributes instanceof Closure) {
             return $this->group(array('prefix' => Lang::code()), $attributes);
-        } elseif (is_array($attributes)) {
+        } elseif(is_array($attributes)) {
             $attributes['prefix'] = trim(isset($attributes['prefix']) ? (Lang::code() . '/' . $attributes['prefix']) : Lang::code(), '/');
             $this->group($attributes, $callback);
         } else {

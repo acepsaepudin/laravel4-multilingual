@@ -2,7 +2,7 @@
 
 namespace Thor\Language;
 
-class UrlGeneratorNoDbTest extends UrlGeneratorTestCase {
+class UrlGeneratorNoDbTest extends UrlGeneratorTestCase
+{
     
-
 }

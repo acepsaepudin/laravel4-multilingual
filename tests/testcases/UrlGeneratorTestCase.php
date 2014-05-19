@@ -2,9 +2,11 @@
 
 namespace Thor\Language;
 
-class UrlGeneratorTestCase extends PackageTestCase {
+class UrlGeneratorTestCase extends PackageTestCase
+{
 
-    public function testURLFacadeIsSwapped() {
+    public function testURLFacadeIsSwapped()
+    {
         $this->assertArrayHasKey('url', $this->app);
         $this->assertArrayHasKey('thor.language.url', $this->app);
         $this->assertInstanceOf('Thor\\Language\\UrlGenerator', $this->app['url']);
@@ -14,7 +16,8 @@ class UrlGeneratorTestCase extends PackageTestCase {
      * @covers  \Thor\Language\UrlGenerator::langTo
      * @dataProvider requestPathProvider
      */
-    public function testLangTo($requestPath, $expectedLangCode) {
+    public function testLangTo($requestPath, $expectedLangCode)
+    {
         $this->prepareRequest($requestPath);
         $baseurl = $this->app['config']->get('app.url') . '/';
         // test the returned url
@@ -27,13 +30,15 @@ class UrlGeneratorTestCase extends PackageTestCase {
      * @covers  \Thor\Language\UrlGenerator::langSwitch
      * @dataProvider requestPathProvider
      */
-    public function testLangSwitch($requestPath, $expectedLangCode, $noLangPath) {
+    public function testLangSwitch($requestPath, $expectedLangCode, $noLangPath)
+    {
         $this->prepareRequest($requestPath);
         $baseurl = $this->app['config']->get('app.url') . '/';
-        $this->assertEquals($baseurl . 'xx'.$noLangPath, $this->app['url']->langSwitch('xx'));
+        $this->assertEquals($baseurl . 'xx' . $noLangPath, $this->app['url']->langSwitch('xx'));
     }
 
-    public function requestPathProvider() {
+    public function requestPathProvider()
+    {
         return array(
             array('/es/foo', 'es', '/foo'),
             array('/en/foobar', 'en', '/foobar'),

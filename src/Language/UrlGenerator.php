@@ -9,7 +9,8 @@ use Lang,
 /**
  * An UrlGenerator with multilingual features
  */
-class UrlGenerator extends IlluminateUrlGenerator {
+class UrlGenerator extends IlluminateUrlGenerator
+{
 
     /**
      * Generate a absolute URL to the given path, with the current language code
@@ -21,7 +22,8 @@ class UrlGenerator extends IlluminateUrlGenerator {
      * @param  string  $langCode If null, the current Lang::code() will be used
      * @return string
      */
-    public function langTo($path, $extra = array(), $secure = null, $langCode = null) {
+    public function langTo($path, $extra = array(), $secure = null, $langCode = null)
+    {
         return parent::to(($langCode ? $langCode : Lang::code()) . '/' . trim($path, '/'), $extra, $secure);
     }
 
@@ -34,10 +36,11 @@ class UrlGenerator extends IlluminateUrlGenerator {
      * @param  bool    $secure
      * @return string
      */
-    public function langSwitch($langCode, $extra = array(), $secure = null) {
+    public function langSwitch($langCode, $extra = array(), $secure = null)
+    {
         $langSegment = $this->request->segment(Config::get('language::route_segment', 1));
 
-        if (Lang::isValidCode($langSegment)) {
+        if(Lang::isValidCode($langSegment)) {
             $current = preg_replace('#^/?([a-z]{2}/)?#', null, preg_replace('#^/([a-z]{2})?$#', null, $this->request->getPathInfo()));
         } else {
             // url is not multilingual

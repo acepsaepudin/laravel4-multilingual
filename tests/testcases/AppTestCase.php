@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Config\Repository as Config;
 
-abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
+abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         // No call to parent::setUp() from Illuminate\Foundation\Testing\TestCase
         $this->app = $this->createApplication();
         $this->client = $this->createClient();
@@ -22,7 +24,8 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      *
      * @return string
      */
-    protected function getApplicationTimezone() {
+    protected function getApplicationTimezone()
+    {
         return 'UTC';
     }
 
@@ -31,7 +34,8 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      *
      * @return array
      */
-    protected function getApplicationAliases() {
+    protected function getApplicationAliases()
+    {
         return array(
             'App' => 'Illuminate\Support\Facades\App',
             'Artisan' => 'Illuminate\Support\Facades\Artisan',
@@ -78,7 +82,8 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      *
      * @return array
      */
-    protected function getPackageAliases() {
+    protected function getPackageAliases()
+    {
         return array();
     }
 
@@ -87,7 +92,8 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      *
      * @return array
      */
-    protected function getApplicationProviders() {
+    protected function getApplicationProviders()
+    {
         return array(
             'Illuminate\Foundation\Providers\ArtisanServiceProvider',
             'Illuminate\Auth\AuthServiceProvider',
@@ -122,7 +128,8 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      *
      * @return array
      */
-    protected function getPackageProviders() {
+    protected function getPackageProviders()
+    {
         return array();
     }
 
@@ -131,7 +138,8 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      *
      * @return array
      */
-    protected function getApplicationPaths() {
+    protected function getApplicationPaths()
+    {
         $basePath = realpath(__DIR__ . '/../fixture');
 
         return array(
@@ -145,7 +153,8 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
     /**
      * {@inheritdoc}
      */
-    public function createApplication() {
+    public function createApplication()
+    {
         $app = new Application;
 
         $app->detectEnvironment(array(
@@ -186,7 +195,8 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      * @param  Illuminate\Foundation\Application    $app
      * @return void
      */
-    protected function getEnvironmentSetUp($app) {
+    protected function getEnvironmentSetUp($app)
+    {
         // Define your environment setup.
     }
 
@@ -196,11 +206,13 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      * @param string $method
      * @param array $query
      * @param array $post
+     * @param array $server
      * @return \Illuminate\Http\Request
      */
-    protected function prepareRequest($path = '/', $method = 'GET', $query = array(), $post = array()) {
-        $this->app['request'] = new \Illuminate\Http\Request($query, $post, array(), array(), array(), 
-                array('REQUEST_URI' => $path, 'REQUEST_METHOD' => $method, 'SERVER_NAME'=>'localhost', 'HTTP_HOST'=>'localhost'));
+    protected function prepareRequest($path = '/', $method = 'GET', $query = array(), $post = array(), $server = array())
+    {
+        $this->app['request'] = new \Illuminate\Http\Request($query, $post, array(), array(), array()
+                , array_merge(array('REQUEST_URI' => $path, 'REQUEST_METHOD' => $method, 'SERVER_NAME' => 'localhost', 'HTTP_HOST' => 'localhost'), $server));
         return $this->app['request'];
     }
 

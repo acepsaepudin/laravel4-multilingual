@@ -2,6 +2,7 @@
 
 namespace Thor\Language;
 
-class TranslatorNoDbTest extends TranslatorTestCase {
-
+class TranslatorNoDbTest extends TranslatorTestCase
+{
+    
 }

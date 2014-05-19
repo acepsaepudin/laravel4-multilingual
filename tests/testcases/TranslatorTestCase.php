@@ -2,9 +2,11 @@
 
 namespace Thor\Language;
 
-class TranslatorTestCase extends PackageTestCase {
+class TranslatorTestCase extends PackageTestCase
+{
 
-    public function testLangFacadeIsSwapped() {
+    public function testLangFacadeIsSwapped()
+    {
         $this->assertArrayHasKey('translator', $this->app);
         $this->assertArrayHasKey('thor.language.translator', $this->app);
         $this->assertInstanceOf('Thor\\Language\\Translator', $this->app['translator']);
@@ -16,7 +18,8 @@ class TranslatorTestCase extends PackageTestCase {
      * @covers  \Thor\Language\Translator::id
      * 
      */
-    public function testCanDetectDefaultLanguage() {
+    public function testCanDetectDefaultLanguage()
+    {
         $this->prepareRequest('/');
         $use_db = $this->app['config']->get('language::use_database');
         $this->assertEquals($use_db ? 1 : -1, $this->app['translator']->id());
@@ -35,7 +38,8 @@ class TranslatorTestCase extends PackageTestCase {
      * @covers  \Thor\Language\Translator::resolveFromDb
      * @dataProvider langProvider
      */
-    public function testCanDetectLanguage($langCode, $locale, $expectedId) {
+    public function testCanDetectLanguage($langCode, $locale, $expectedId)
+    {
         $this->prepareRequest('/' . $langCode . '/');
         $this->assertInstanceOf('Thor\\Language\\Language', $this->app['translator']->language());
         $use_db = $this->app['config']->get('language::use_database');
@@ -49,7 +53,8 @@ class TranslatorTestCase extends PackageTestCase {
      * @covers  \Thor\Language\Translator::isValidCode
      * @dataProvider langProvider2
      */
-    public function testIsValidCode($langCode, $locale, $mustBeValidCode, $mustBeValidLocale) {
+    public function testIsValidCode($langCode, $locale, $mustBeValidCode, $mustBeValidLocale)
+    {
         $this->assertEquals($mustBeValidCode, $this->app['translator']->isValidCode($langCode));
     }
 
@@ -57,20 +62,22 @@ class TranslatorTestCase extends PackageTestCase {
      * @covers  \Thor\Language\Translator::isValidLocale
      * @dataProvider langProvider2
      */
-    public function testIsValidLocale($langCode, $locale, $mustBeValidCode, $mustBeValidLocale) {
+    public function testIsValidLocale($langCode, $locale, $mustBeValidCode, $mustBeValidLocale)
+    {
         $this->assertEquals($mustBeValidLocale, $this->app['translator']->isValidLocale($locale));
     }
 
     /**
      * @covers  \Thor\Language\Translator::getActiveLanguages
      */
-    public function testGetActiveLanguages() {
+    public function testGetActiveLanguages()
+    {
         $use_db = $this->app['config']->get('language::use_database');
         $activeLangs = $this->app['translator']->getActiveLanguages();
         $this->assertInstanceOf('Illuminate\\Database\\Eloquent\\Collection', $activeLangs);
-        if($use_db){
+        if($use_db) {
             $this->assertCount(5, $activeLangs);
-        }else{
+        } else {
             $this->assertCount(0, $activeLangs);
         }
     }
@@ -78,7 +85,8 @@ class TranslatorTestCase extends PackageTestCase {
     /**
      * @covers  \Thor\Language\Translator::getAvailableLocales
      */
-    public function testGetAvailableLocales() {
+    public function testGetAvailableLocales()
+    {
         $locales = $this->app['translator']->getAvailableLocales();
         $this->assertTrue(is_array($locales));
         $this->assertCount(5, $locales);
@@ -86,27 +94,49 @@ class TranslatorTestCase extends PackageTestCase {
     }
 
     /**
-     * @covers  \Thor\Language\Translator::resolveWith
-     */
-    public function testResolveWith() {
-        // implement test
-    }
-
-    /**
      * @covers  \Thor\Language\Translator::setInternalLocale
      */
-    public function testSetInternalLocale() {
+    public function testSetInternalLocale()
+    {
         // implement test
     }
 
     /**
      * @covers  \Thor\Language\Translator::setLanguage
      */
-    public function testSetLanguage() {
+    public function testSetLanguage()
+    {
         // implement test
     }
 
-    public function langProvider() {
+    /**
+     * @covers  \Thor\Language\Translator::resolveFromHeader
+     * @dataProvider acceptLanguageHeaderProvider
+     */
+    public function testResolveFromHeader($headerValue, $expectedLangCode)
+    {
+        $this->app['config']->set('language::use_header', true);
+        $this->prepareRequest('/', 'GET', array(), array(), array(
+            'HTTP_ACCEPT_LANGUAGE' => $headerValue
+        ));
+        $this->assertEquals($expectedLangCode, $this->app['translator']->code());
+    }
+
+    /**
+     * @covers  \Thor\Language\Translator::resolveWith
+     * @dataProvider langProvider2
+     */
+    public function testResolveWith($langCode, $locale, $mustBeValidCode, $mustBeValidLocale)
+    {
+        if($mustBeValidLocale){
+            $this->assertEquals($locale, $this->app['translator']->resolveWith($langCode)->locale);
+        }else{
+            $this->assertNotEquals($locale, $this->app['translator']->resolveWith($langCode)->locale);
+        }
+    }
+
+    public function langProvider()
+    {
         return array(
             array('en', 'en_US', 1),
             array('es', 'es_ES', 2),
@@ -116,7 +146,8 @@ class TranslatorTestCase extends PackageTestCase {
         );
     }
 
-    public function langProvider2() {
+    public function langProvider2()
+    {
         return array(
             array('en', 'en_US', true, true),
             array('es', 'es_ES', true, true),
@@ -128,7 +159,8 @@ class TranslatorTestCase extends PackageTestCase {
         );
     }
 
-    public function acceptLanguageHeaderProvider() {
+    public function acceptLanguageHeaderProvider()
+    {
         return array(
             array('en-us', 'en'),
             array('en-gb', 'en'),

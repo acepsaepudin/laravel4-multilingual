@@ -5,9 +5,11 @@ namespace Thor\Language;
 /**
  * Base Container-mocking class
  */
-abstract class PackageTestCase extends AppTestCase {
+abstract class PackageTestCase extends AppTestCase
+{
 
-    protected function getPackageProviders() {
+    protected function getPackageProviders()
+    {
         return array('Thor\\Language\\LanguageServiceProvider');
     }
 
@@ -17,13 +19,14 @@ abstract class PackageTestCase extends AppTestCase {
      * @param  Illuminate\Foundation\Application    $app
      * @return void
      */
-    protected function getEnvironmentSetUp($app) {
+    protected function getEnvironmentSetUp($app)
+    {
         // reset base path to point to our package's src directory
         $app['path.base'] = realpath(__DIR__ . '/../../src');
 
         // load package config
         $config = include $app['path.base'] . '/config/config.php';
-        foreach ($config as $k => $v) {
+        foreach($config as $k => $v) {
             $app['config']->set('language::' . $k, $v);
         }
 
@@ -42,10 +45,12 @@ abstract class PackageTestCase extends AppTestCase {
      * @param string $method
      * @param array $query
      * @param array $post
+     * @param array $server
      * @return \Illuminate\Http\Request
      */
-    protected function prepareRequest($path = '/', $method = 'GET', $query = array(), $post = array()) {
-        $req = parent::prepareRequest($path, $method, $query, $post);
+    protected function prepareRequest($path = '/', $method = 'GET', $query = array(), $post = array(), $server = array())
+    {
+        $req = parent::prepareRequest($path, $method, $query, $post, $server);
         // we need to resolve the language for each new request
         $this->app['translator']->resolve();
         return $req;
@@ -54,7 +59,8 @@ abstract class PackageTestCase extends AppTestCase {
     /**
      * Migrate and seed
      */
-    protected function prepareDatabase() {
+    protected function prepareDatabase()
+    {
         // create an artisan object for calling migrations
         $artisan = $this->app->make('artisan');
 
@@ -68,7 +74,8 @@ abstract class PackageTestCase extends AppTestCase {
         ));
     }
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
 
         $this->prepareRequest('/'); // set default request to GET /

@@ -4,7 +4,8 @@ namespace Thor\Language;
 
 use Illuminate\Container\Container;
 
-class Translator extends \Illuminate\Translation\Translator {
+class Translator extends \Illuminate\Translation\Translator
+{
 
     /**
      * The IoC Container
@@ -32,7 +33,8 @@ class Translator extends \Illuminate\Translation\Translator {
      *
      * @param Container $app
      */
-    public function __construct(Container $app) {
+    public function __construct(Container $app)
+    {
         $this->app = $app;
         $this->loader = $app['translation.loader'];
         $this->locale = $app['config']->get('app.locale');
@@ -40,7 +42,7 @@ class Translator extends \Illuminate\Translation\Translator {
         $this->language = null;
         $this->activeLanguages = new \Illuminate\Database\Eloquent\Collection(array());
 
-        if ($app['config']->get('language::autoresolve') === true) {
+        if($app['config']->get('language::autoresolve') === true) {
             $this->resolve();
         } else {
             $this->language = new Language(array('id' => -1, 'name' => $this->locale, 'code' => $this->locale, 'locale' => $this->locale));
@@ -51,7 +53,8 @@ class Translator extends \Illuminate\Translation\Translator {
      * The current Language model ID
      * @return int
      */
-    public function id() {
+    public function id()
+    {
         return $this->language->id;
     }
 
@@ -59,7 +62,8 @@ class Translator extends \Illuminate\Translation\Translator {
      * The current Language model ISO 639-1 code
      * @return type
      */
-    public function code() {
+    public function code()
+    {
         return $this->language->code;
     }
 
@@ -67,34 +71,58 @@ class Translator extends \Illuminate\Translation\Translator {
      * The current Language model instance
      * @return Language
      */
-    public function language() {
+    public function language()
+    {
         return $this->language;
     }
 
-    public function resolve($routeSegment = null) {
+    /**
+     * 
+     * @param int $routeSegment
+     * @return Language
+     */
+    public function resolve($routeSegment = null)
+    {
         return $this->resolveWith($this->resolveFromRequest(($routeSegment === null) ? $this->app['config']->get('language::route_segment') : $routeSegment));
     }
 
-    public function resolveWith($langCode) {
-        if ($this->app['config']->get('language::use_database') === true) {
+    /**
+     * 
+     * @param string $langCode
+     * @return Language
+     */
+    public function resolveWith($langCode)
+    {
+        if($this->app['config']->get('language::use_database') === true) {
             return $this->resolveFromDb($langCode);
         } else {
             return $this->resolveFromConfig($langCode);
         }
     }
 
-    public function setLanguage(Language $language, $setInternals = true) {
+    /**
+     * 
+     * @param \Thor\Language\Language $language
+     * @param boolean $changeInternalLocale
+     */
+    public function setLanguage(Language $language, $changeInternalLocale = true)
+    {
         $this->language = $language;
-        if ($setInternals === true) {
+        if($changeInternalLocale === true) {
             $this->setInternalLocale($language->locale ? $language->locale : $language->code);
         }
     }
 
-    public function setInternalLocale($locale) {
+    /**
+     * 
+     * @param string $locale
+     */
+    public function setInternalLocale($locale)
+    {
         $this->app['config']->set('app.locale', $locale);
         $this->app->setLocale($locale);
         $this->setLocale($locale);
-        return setlocale(LC_ALL, $locale);
+        setlocale(LC_ALL, $locale);
     }
 
     /**
@@ -102,7 +130,8 @@ class Translator extends \Illuminate\Translation\Translator {
      *
      * @var \Illuminate\Database\Eloquent\Collection | Language[]
      */
-    public function getActiveLanguages() {
+    public function getActiveLanguages()
+    {
         return $this->activeLanguages;
     }
 
@@ -110,7 +139,8 @@ class Translator extends \Illuminate\Translation\Translator {
      * 
      * @return array
      */
-    public function getAvailableLocales() {
+    public function getAvailableLocales()
+    {
         return $this->app['config']->get('language::available_locales');
     }
 
@@ -119,7 +149,8 @@ class Translator extends \Illuminate\Translation\Translator {
      * @param string $locale
      * @return boolean
      */
-    public function isValidLocale($locale) {
+    public function isValidLocale($locale)
+    {
         return in_array($locale, array_values($this->getAvailableLocales()));
     }
 
@@ -128,13 +159,15 @@ class Translator extends \Illuminate\Translation\Translator {
      * @param string $code
      * @return boolean
      */
-    public function isValidCode($code) {
+    public function isValidCode($code)
+    {
         return in_array($code, array_keys($this->getAvailableLocales()));
     }
 
-    protected function resolveFromDb($langCode) {
+    protected function resolveFromDb($langCode)
+    {
         $this->activeLanguages = Language::sorted()->active()->get();
-        if (count($this->activeLanguages) > 0) {
+        if(count($this->activeLanguages) > 0) {
             // Set the first language as the fallback
             $this->app['config']->set('app.fallback_locale', $this->activeLanguages[0]->locale);
             // Override available locales
@@ -143,15 +176,15 @@ class Translator extends \Illuminate\Translation\Translator {
             $fallbackLang = $this->activeLanguages[0];
             $isFound = false;
             // Lookup for a matching language code
-            foreach ($this->activeLanguages as $ln) {
-                if ($ln->code == $langCode) {
+            foreach($this->activeLanguages as $ln) {
+                if($ln->code == $langCode) {
                     $isFound = true;
                     $this->setLanguage($ln, true);
                     break;
                 }
             }
             // If not found, set the current to the fallback language
-            if ($isFound === false) {
+            if($isFound === false) {
                 $this->setLanguage($fallbackLang, true);
             }
         } else {
@@ -160,17 +193,18 @@ class Translator extends \Illuminate\Translation\Translator {
         return $this->language;
     }
 
-    protected function resolveFromConfig($langCode) {
+    protected function resolveFromConfig($langCode)
+    {
         $availableLocales = $this->getAvailableLocales();
         $isFound = false;
-        foreach ($availableLocales as $code => $locale) {
-            if ($code == $langCode) {
+        foreach($availableLocales as $code => $locale) {
+            if($code == $langCode) {
                 $isFound = true;
                 $this->setLanguage(new Language(array('id' => -1, 'name' => $code, 'code' => $code, 'locale' => $locale)), true);
                 break;
             }
         }
-        if ($isFound === false) {
+        if($isFound === false) {
             $fallbackLocale = $this->app['config']->get('app.fallback_locale');
             $locale = isset($availableLocales[$fallbackLocale]) ? $availableLocales[$fallbackLocale] : $locale;
             $this->setLanguage(new Language(array('id' => -1, 'name' => $fallbackLocale, 'code' => $fallbackLocale, 'locale' => $locale)), true);
@@ -183,15 +217,16 @@ class Translator extends \Illuminate\Translation\Translator {
      * @param int $routeSegment Route segment index, leave it null to read from the config
      * @return string
      */
-    protected function resolveFromRequest($routeSegment = null) {
-        $fallbackLangCode = $this->app['config']->get('language::use_header') ? $this->resolveFromUserAgent() : null;
+    protected function resolveFromRequest($routeSegment = null)
+    {
+        $fallbackLangCode = $this->app['config']->get('language::use_header') ? $this->resolveFromHeader() : null;
         $langCode = $this->resolveFromRoute($routeSegment);
 
-        if ($langCode === null) {
+        if($langCode === null) {
             //if no language is specified in the url, use the default one
             $langCode = $fallbackLangCode;
         }
-        if (!$this->isValidCode($langCode)) {
+        if(!$this->isValidCode($langCode)) {
             $this->app['events']->fire('language::invalid_language', array($langCode, $fallbackLangCode), false);
             // The following line is commented because we want the app to throw a NotFoundException
             // $langCode = null;
@@ -205,19 +240,21 @@ class Translator extends \Illuminate\Translation\Translator {
      * @param string $routeSegment Route segment index
      * @return string|null
      */
-    protected function resolveFromRoute($routeSegment = 1) {
+    protected function resolveFromRoute($routeSegment = 1)
+    {
         $code = null;
-        if ($this->app['request']->segment($routeSegment) !== null) {
+        if($this->app['request']->segment($routeSegment) !== null) {
             $code = $this->app['request']->segment($routeSegment);
         }
         return empty($code) ? null : $code;
     }
 
     /**
-     * Resolves language code from a http header
+     * Resolves the language code from the HTTP_ACCEPT_LANGUAGE header
      * @return string|null
      */
-    protected function resolveFromUserAgent() {
+    protected function resolveFromHeader()
+    {
         $code = substr($this->app['request']->server('HTTP_ACCEPT_LANGUAGE', null), 0, 2);
         return empty($code) ? null : $code;
     }

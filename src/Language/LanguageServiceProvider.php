@@ -6,7 +6,8 @@ use Illuminate\Container\Container;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 
-class LanguageServiceProvider extends ServiceProvider {
+class LanguageServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -19,7 +20,8 @@ class LanguageServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         $this->package('thor/language', 'language');
         Facades\Lang::swap($this->app['thor.language.translator']);
         Facades\Route::swap($this->app['thor.language.router']);
@@ -31,7 +33,8 @@ class LanguageServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->app = $this->bindClasses($this->app);
     }
 
@@ -40,7 +43,8 @@ class LanguageServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return array('thor.language.translator', 'thor.language.router', 'thor.language.url');
     }
 
@@ -51,8 +55,9 @@ class LanguageServiceProvider extends ServiceProvider {
      *
      * @return Container
      */
-    public static function make($app = null) {
-        if (!$app) {
+    public static function make($app = null)
+    {
+        if(!$app) {
             $app = new Container;
         }
 
@@ -69,7 +74,8 @@ class LanguageServiceProvider extends ServiceProvider {
      * @param  Container $app
      * @return Container
      */
-    public function bindClasses(Container $app) {
+    public function bindClasses(Container $app)
+    {
         $app['config']->package('thor/language', __DIR__ . '/../config');
 
         $app->singleton('thor.language.translator', function ($app) {

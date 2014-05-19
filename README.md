@@ -65,7 +65,7 @@ Route::langGroup(function() {
 * This package swaps the singleton instances of Lang, Route and URL facades for extending them with multilingual features.
 * When the package is booted, and `language::autoresolve` is `true` (enabled by default), it looks for a matching language against the 
 route segment specified in `language::route_segment` or the `HTTP_ACCEPT_LANGUAGE` header as a
-fallback (if `language::use_useragent` is true, disabled by default).
+fallback (if `language::use_header` is true, disabled by default).
 * If no language matches the route segment or the header, or they are empty, the app config `fallback_locale` variable is used.
 * If an invalid language is passed in the route, the `language::invalid_language` event is fired with
 two parameters: the invalid language segment and the fallback locale.

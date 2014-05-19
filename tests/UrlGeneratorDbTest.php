@@ -2,9 +2,11 @@
 
 namespace Thor\Language;
 
-class UrlGeneratorDbTest extends UrlGeneratorTestCase {
-    
-    public function setUp() {
+class UrlGeneratorDbTest extends UrlGeneratorTestCase
+{
+
+    public function setUp()
+    {
         parent::setUp();
         $this->prepareDatabase();
         $this->app['config']->set('language::use_database', true);

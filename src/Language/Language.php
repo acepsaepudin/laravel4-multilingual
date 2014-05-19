@@ -16,7 +16,8 @@ namespace Thor\Language;
  * @property boolean $is_active
  * @property int $sorting
  */
-class Language extends \Illuminate\Database\Eloquent\Model {
+class Language extends \Illuminate\Database\Eloquent\Model
+{
 
     /**
      *
@@ -32,7 +33,8 @@ class Language extends \Illuminate\Database\Eloquent\Model {
      * 
      * @return Language[]
      */
-    public static function scopeSorted($query) {
+    public static function scopeSorted($query)
+    {
         return $query->orderBy('sorting', 'asc');
     }
 
@@ -40,7 +42,8 @@ class Language extends \Illuminate\Database\Eloquent\Model {
      * 
      * @return Language[]
      */
-    public static function scopeActive($query) {
+    public static function scopeActive($query)
+    {
         return $query->where('is_active', '=', 1);
     }
 
@@ -48,7 +51,8 @@ class Language extends \Illuminate\Database\Eloquent\Model {
      * 
      * @return Language[]
      */
-    public static function scopeByCode($query, $code) {
+    public static function scopeByCode($query, $code)
+    {
         return $query->whereRaw('(code=?)', array($code));
     }
 
@@ -56,7 +60,8 @@ class Language extends \Illuminate\Database\Eloquent\Model {
      * 
      * @return Language[]
      */
-    public static function scopeByLocale($query, $locale) {
+    public static function scopeByLocale($query, $locale)
+    {
         return $query->whereRaw('(locale=?)', array($locale));
     }
 
@@ -64,10 +69,11 @@ class Language extends \Illuminate\Database\Eloquent\Model {
      * 
      * @return Language[]
      */
-    public static function scopeToAssoc($query) {
+    public static function scopeToAssoc($query)
+    {
         $langs = $query->get();
         $langs_assoc = array();
-        foreach ($langs as $lang) {
+        foreach($langs as $lang) {
             $langs_assoc[$lang->code] = $lang;
         }
         return $langs_assoc;
