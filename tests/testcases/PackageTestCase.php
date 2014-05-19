@@ -7,24 +7,6 @@ namespace Thor\Language;
  */
 abstract class PackageTestCase extends AppTestCase {
 
-    /**
-     *
-     * @var Router
-     */
-    protected $router;
-
-    /**
-     *
-     * @var UrlGenerator
-     */
-    protected $url;
-
-    /**
-     *
-     * @var Translator
-     */
-    protected $translator;
-
     protected function getPackageProviders() {
         return array('Thor\\Language\\LanguageServiceProvider');
     }
@@ -37,7 +19,7 @@ abstract class PackageTestCase extends AppTestCase {
      */
     protected function getEnvironmentSetUp($app) {
         // reset base path to point to our package's src directory
-        $app['path.base'] = __DIR__ . '/../src';
+        $app['path.base'] = realpath(__DIR__ . '/../../src');
 
         // load package config
         $config = include $app['path.base'] . '/config/config.php';
@@ -54,18 +36,40 @@ abstract class PackageTestCase extends AppTestCase {
         ));
     }
 
+    /**
+     * Overrides the current request and resolves the language again
+     * @param string $path
+     * @param string $method
+     * @param array $query
+     * @param array $post
+     * @return \Illuminate\Http\Request
+     */
     protected function prepareRequest($path = '/', $method = 'GET', $query = array(), $post = array()) {
-        parent::prepareRequest($path, $method, $query, $post);
+        $req = parent::prepareRequest($path, $method, $query, $post);
         // we need to resolve the language for each new request
-        $this->translator->resolve();
+        $this->app['translator']->resolve();
+        return $req;
+    }
+
+    /**
+     * Migrate and seed
+     */
+    protected function prepareDatabase() {
+        // create an artisan object for calling migrations
+        $artisan = $this->app->make('artisan');
+
+        // Migrate and seed
+        $artisan->call('migrate', array(
+            '--database' => 'testbench',
+            '--path' => 'migrations',
+        ));
+        $artisan->call('db:seed', array(
+            '--class' => 'Thor\\Language\\Seeder',
+        ));
     }
 
     public function setUp() {
         parent::setUp();
-
-        $this->router = $this->app['router'];
-        $this->url = $this->app['url'];
-        $this->translator = $this->app['translator'];
 
         $this->prepareRequest('/'); // set default request to GET /
     }

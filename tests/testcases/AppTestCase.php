@@ -132,7 +132,7 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      * @return array
      */
     protected function getApplicationPaths() {
-        $basePath = realpath(__DIR__ . '/fixture');
+        $basePath = realpath(__DIR__ . '/../fixture');
 
         return array(
             'app' => "{$basePath}/app",
@@ -199,7 +199,8 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase {
      * @return \Illuminate\Http\Request
      */
     protected function prepareRequest($path = '/', $method = 'GET', $query = array(), $post = array()) {
-        $this->app['request'] = new \Illuminate\Http\Request($query, $post, array(), array(), array(), array('REQUEST_URI' => $path, 'REQUEST_METHOD' => $method));
+        $this->app['request'] = new \Illuminate\Http\Request($query, $post, array(), array(), array(), 
+                array('REQUEST_URI' => $path, 'REQUEST_METHOD' => $method, 'SERVER_NAME'=>'localhost', 'HTTP_HOST'=>'localhost'));
         return $this->app['request'];
     }
 

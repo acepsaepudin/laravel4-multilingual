@@ -24,7 +24,7 @@
             "src/migrations"
         ],
         "psr-4": {
-            "Thor\\Language\\": ["src/Language", "tests"]
+            "Thor\\Language\\": ["src/Language", "tests", "tests/testcases"]
         }
     },
     "minimum-stability": "stable"

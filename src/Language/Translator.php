@@ -140,7 +140,7 @@ class Translator extends \Illuminate\Translation\Translator {
             // Override available locales
             $this->app['config']->set('language::available_locales', array_pluck($this->activeLanguages, 'locale', 'code'));
             // Current fallback lang
-            $fallbackLang = $this->activeLanguages[0]->code;
+            $fallbackLang = $this->activeLanguages[0];
             $isFound = false;
             // Lookup for a matching language code
             foreach ($this->activeLanguages as $ln) {

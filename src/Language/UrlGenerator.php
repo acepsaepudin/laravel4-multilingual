@@ -3,20 +3,13 @@
 namespace Thor\Language;
 
 use Illuminate\Routing\UrlGenerator as IlluminateUrlGenerator;
+use Lang,
+    Config;
 
 /**
  * An UrlGenerator with multilingual features
  */
 class UrlGenerator extends IlluminateUrlGenerator {
-
-    /**
-     * Get the language code of the current url
-     *
-     * @return string
-     */
-    public function lang() {
-        return $this->request->segment($this->app['config']->get('language::route_segment', 1));
-    }
 
     /**
      * Generate a absolute URL to the given path, with the current language code
@@ -25,25 +18,33 @@ class UrlGenerator extends IlluminateUrlGenerator {
      * @param  string  $path
      * @param  mixed  $extra
      * @param  bool  $secure
+     * @param  string  $langCode If null, the current Lang::code() will be used
      * @return string
      */
-    public function langTo($path, $extra = array(), $secure = null) {
-        parent::to(Lang::code() . '/' . trim($path, '/'), $extra, $secure);
+    public function langTo($path, $extra = array(), $secure = null, $langCode = null) {
+        return parent::to(($langCode ? $langCode : Lang::code()) . '/' . trim($path, '/'), $extra, $secure);
     }
 
     /**
-     * Generate a absolute URL to the same page in another language
+     * Generate a absolute URL of the current URL but in another language.
+     * If the current url is not multilingual, the language code is prepended to the url.
      *
-     * @param  string  $language
+     * @param  string  $langCode
      * @param  mixed   $extra
      * @param  bool    $secure
      * @return string
      */
-    public function langSwitch($language, $extra = array(), $secure = null) {
-        // Replace existing locale in current URL
-        $current = preg_replace('#^/?([a-z]{2}/)?#', null, preg_replace('#^/([a-z]{2})?$#', null, $this->request->getPathInfo()));
+    public function langSwitch($langCode, $extra = array(), $secure = null) {
+        $langSegment = $this->request->segment(Config::get('language::route_segment', 1));
 
-        return $this->to($language . '/' . $current, $extra, $secure);
+        if (Lang::isValidCode($langSegment)) {
+            $current = preg_replace('#^/?([a-z]{2}/)?#', null, preg_replace('#^/([a-z]{2})?$#', null, $this->request->getPathInfo()));
+        } else {
+            // url is not multilingual
+            $current = ltrim($this->request->getPathInfo(), '/ ');
+        }
+
+        return $this->to($langCode . '/' . $current, $extra, $secure);
     }
 
 }

@@ -16,13 +16,33 @@ class RouterTest extends PackageTestCase {
      */
     public function testLangGroup($langCode) {
         $this->prepareRequest('/' . $langCode . '/');
-        $router = $this->router;
+        $router = $this->app['router'];
 
-        $this->router->langGroup(function () use ($router) {
+        $this->app['router']->langGroup(function () use ($router) {
             $router->get('foobar', 'foobar');
         });
 
-        foreach ($this->router->getRoutes() as $r) {
+        foreach ($this->app['router']->getRoutes() as $r) {
+            $route = $r;
+            break;
+        }
+
+        $this->assertEquals($langCode . '/foobar', $route->getPath());
+    }
+
+    /**
+     * @covers  \Thor\Language\Router::langGroup
+     * @dataProvider langCodeProvider
+     */
+    public function testCanDetectLanguage($langCode) {
+        $this->prepareRequest('/' . $langCode . '/');
+        $router = $this->app['router'];
+
+        $this->app['router']->langGroup(function () use ($router) {
+            $router->get('foobar', 'foobar');
+        });
+
+        foreach ($this->app['router']->getRoutes() as $r) {
             $route = $r;
             break;
         }

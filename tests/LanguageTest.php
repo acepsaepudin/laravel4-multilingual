@@ -13,22 +13,11 @@ class LanguageTest extends PackageTestCase {
      */
     public function setUp() {
         parent::setUp();
-
-        // create an artisan object for calling migrations
-        $artisan = $this->app->make('artisan');
-
-        // Migrate and seed
-        $artisan->call('migrate', array(
-            '--database' => 'testbench',
-            '--path' => 'migrations',
-        ));
-        $artisan->call('db:seed', array(
-            '--class' => 'Thor\\Language\\Seeder',
-        ));
+        $this->prepareDatabase();
     }
 
-    public function testLanguagesTableHasTwoRecords() {
-        $this->assertCount(2, Language::all());
+    public function testLanguagesTableHas5Records() {
+        $this->assertCount(5, Language::all());
     }
 
     /**
@@ -37,8 +26,8 @@ class LanguageTest extends PackageTestCase {
     public function testScopeSorted() {
         $lang = Language::sorted()->first();
         $this->assertInstanceOf('Thor\\Language\\Language', $lang);
-        $this->assertEquals('es', $lang->code);
-        $this->assertEquals('es_ES', $lang->locale);
+        $this->assertEquals('en', $lang->code);
+        $this->assertEquals('en_US', $lang->locale);
         $this->assertEquals(true, $lang->is_active);
         $this->assertEquals(1, $lang->sorting);
     }
@@ -47,12 +36,12 @@ class LanguageTest extends PackageTestCase {
      * @covers \Thor\Language\Language::scopeActive
      */
     public function testScopeActive() {
-        $lang = Language::find(1);
+        $lang = Language::find(2);
         $lang->is_active = false;
         $lang->save();
 
         $langs = Language::active()->get();
-        $this->assertCount(1, $langs);
+        $this->assertCount(4, $langs);
         $this->assertEquals('en', $langs->first()->code);
     }
 
@@ -61,7 +50,7 @@ class LanguageTest extends PackageTestCase {
      */
     public function testScopeToAssoc() {
         $langs = Language::toAssoc();
-        $this->assertCount(2, $langs);
+        $this->assertCount(5, $langs);
         $this->assertArrayHasKey('es', $langs);
         $this->assertArrayHasKey('en', $langs);
     }
@@ -72,6 +61,7 @@ class LanguageTest extends PackageTestCase {
     public function testScopeByCode() {
         $lang = Language::byCode('en')->first();
         $this->assertInstanceOf('Thor\\Language\\Language', $lang);
+        $this->assertEquals(1, $lang->id);
         $this->assertEquals('en', $lang->code);
         $this->assertEquals('en_US', $lang->locale);
     }
@@ -82,6 +72,7 @@ class LanguageTest extends PackageTestCase {
     public function testScopeByLocale() {
         $lang = Language::byLocale('es_ES')->first();
         $this->assertInstanceOf('Thor\\Language\\Language', $lang);
+        $this->assertEquals(2, $lang->id);
         $this->assertEquals('es', $lang->code);
         $this->assertEquals('es_ES', $lang->locale);
     }
