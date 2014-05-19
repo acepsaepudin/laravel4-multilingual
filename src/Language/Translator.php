@@ -45,7 +45,8 @@ class Translator extends \Illuminate\Translation\Translator
         if($app['config']->get('language::autoresolve') === true) {
             $this->resolve();
         } else {
-            $this->language = new Language(array('id' => -1, 'name' => $this->locale, 'code' => $this->locale, 'locale' => $this->locale));
+            $this->language = new Language(array('id' => -1, 'name' => $this->locale,
+                'code' => preg_replace('/[_-].+$/', '', $this->locale), 'locale' => $this->locale));
         }
     }
 
@@ -78,12 +79,13 @@ class Translator extends \Illuminate\Translation\Translator
 
     /**
      * 
-     * @param int $routeSegment
+     * @param int $segmentIndex
      * @return Language
      */
-    public function resolve($routeSegment = null)
+    public function resolve($segmentIndex = null)
     {
-        return $this->resolveWith($this->resolveFromRequest(($routeSegment === null) ? $this->app['config']->get('language::route_segment') : $routeSegment));
+        return $this->resolveWith($this->resolveFromRequest(($segmentIndex === null) ?
+                                        $this->app['config']->get('language::segment_index') : $segmentIndex));
     }
 
     /**
@@ -200,27 +202,29 @@ class Translator extends \Illuminate\Translation\Translator
         foreach($availableLocales as $code => $locale) {
             if($code == $langCode) {
                 $isFound = true;
-                $this->setLanguage(new Language(array('id' => -1, 'name' => $code, 'code' => $code, 'locale' => $locale)), true);
+                $this->setLanguage(new Language(array('id' => -1, 'name' => $code,
+                    'code' => $code, 'locale' => $locale)), true);
                 break;
             }
         }
         if($isFound === false) {
             $fallbackLocale = $this->app['config']->get('app.fallback_locale');
             $locale = isset($availableLocales[$fallbackLocale]) ? $availableLocales[$fallbackLocale] : $locale;
-            $this->setLanguage(new Language(array('id' => -1, 'name' => $fallbackLocale, 'code' => $fallbackLocale, 'locale' => $locale)), true);
+            $this->setLanguage(new Language(array('id' => -1, 'name' => $fallbackLocale,
+                'code' => $fallbackLocale, 'locale' => $locale)), true);
         }
         return $this->language;
     }
 
     /**
      * Resolves language code from current request (route segment or HTTP_ACCEPT_LANGUAGE header as fallback)
-     * @param int $routeSegment Route segment index, leave it null to read from the config
+     * @param int $segmentIndex Route segment index, leave it null to read from the config
      * @return string
      */
-    protected function resolveFromRequest($routeSegment = null)
+    protected function resolveFromRequest($segmentIndex = null)
     {
-        $fallbackLangCode = $this->app['config']->get('language::use_header') ? $this->resolveFromHeader() : null;
-        $langCode = $this->resolveFromRoute($routeSegment);
+        $fallbackLangCode = $this->app['config']->get('language::use_header') ? $this->getCodeFromHeader() : null;
+        $langCode = $this->getCodeFromSegment($segmentIndex);
 
         if($langCode === null) {
             //if no language is specified in the url, use the default one
@@ -236,24 +240,21 @@ class Translator extends \Illuminate\Translation\Translator
     }
 
     /**
-     * Resolves language code from the given route segment index
-     * @param string $routeSegment Route segment index
+     * Returns the (unresolved) language code part of the given URL segment index
+     * @param string $segmentIndex Route segment index
      * @return string|null
      */
-    protected function resolveFromRoute($routeSegment = 1)
+    public function getCodeFromSegment($segmentIndex = null)
     {
-        $code = null;
-        if($this->app['request']->segment($routeSegment) !== null) {
-            $code = $this->app['request']->segment($routeSegment);
-        }
-        return empty($code) ? null : $code;
+        return $this->app['request']->segment($segmentIndex ? $segmentIndex :
+                                $this->app['config']->get('language::segment_index', 1), null);
     }
 
     /**
-     * Resolves the language code from the HTTP_ACCEPT_LANGUAGE header
+     * Returns the  (unresolved) language code from the HTTP_ACCEPT_LANGUAGE header
      * @return string|null
      */
-    protected function resolveFromHeader()
+    public function getCodeFromHeader()
     {
         $code = substr($this->app['request']->server('HTTP_ACCEPT_LANGUAGE', null), 0, 2);
         return empty($code) ? null : $code;

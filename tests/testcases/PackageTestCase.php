@@ -74,6 +74,32 @@ abstract class PackageTestCase extends AppTestCase
         ));
     }
 
+    /**
+     * Rollback migrations
+     */
+    protected function resetDatabase()
+    {
+        // create an artisan object for calling migrations
+        $artisan = $this->app->make('artisan');
+
+        // Migrate and seed
+        $artisan->call('migrate:reset');
+    }
+
+    /**
+     * Removes seeds
+     */
+    protected function nukeDatabaseData()
+    {
+        $this->resetDatabase();
+        // create an artisan object for calling migrations
+        $artisan = $this->app->make('artisan');
+        $artisan->call('migrate', array(
+            '--database' => 'testbench',
+            '--path' => 'migrations',
+        ));
+    }
+
     public function setUp()
     {
         parent::setUp();

@@ -13,4 +13,14 @@ class TranslatorDbTest extends TranslatorTestCase
         $this->app['translator']->resolve(); // resolve, now using DB
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage The database has no active languages.
+     */
+    public function testExceptionDbIsEmpty()
+    {
+        $this->nukeDatabaseData();
+        $this->prepareRequest('/');
+    }
+
 }

@@ -2,7 +2,7 @@
 
 namespace Thor\Language;
 
-class RouterTest extends RouterTestCase
+class RouterDbTest extends RouterTestCase
 {
     
 }

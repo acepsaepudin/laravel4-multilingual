@@ -12,6 +12,17 @@ class TranslatorTestCase extends PackageTestCase
         $this->assertInstanceOf('Thor\\Language\\Translator', $this->app['translator']);
     }
 
+    public function testAutoresolveDisabled()
+    {
+        $this->app['config']->set('language::autoresolve', false);
+        $this->prepareRequest('/');
+        $translator = new Translator($this->app);
+        $this->assertEquals(-1, $translator->id());
+        $this->assertEquals('en', $translator->code());
+        $this->assertEquals('en_US', $translator->locale());
+        $this->assertEquals('en_US', $this->app['config']->get('app.locale'));
+    }
+
     /**
      * @covers  \Thor\Language\Translator::resolve
      * @covers  \Thor\Language\Translator::code
@@ -34,7 +45,7 @@ class TranslatorTestCase extends PackageTestCase
      * @covers  \Thor\Language\Translator::id
      * @covers  \Thor\Language\Translator::language
      * @covers  \Thor\Language\Translator::resolveFromConfig
-     * @covers  \Thor\Language\Translator::resolveFromRequest
+     * @covers  \Thor\Language\Translator::getCodeFromSegment
      * @covers  \Thor\Language\Translator::resolveFromDb
      * @dataProvider langProvider
      */
@@ -110,7 +121,7 @@ class TranslatorTestCase extends PackageTestCase
     }
 
     /**
-     * @covers  \Thor\Language\Translator::resolveFromHeader
+     * @covers  \Thor\Language\Translator::getCodeFromHeader
      * @dataProvider acceptLanguageHeaderProvider
      */
     public function testResolveFromHeader($headerValue, $expectedLangCode)
@@ -128,9 +139,9 @@ class TranslatorTestCase extends PackageTestCase
      */
     public function testResolveWith($langCode, $locale, $mustBeValidCode, $mustBeValidLocale)
     {
-        if($mustBeValidLocale){
+        if($mustBeValidLocale) {
             $this->assertEquals($locale, $this->app['translator']->resolveWith($langCode)->locale);
-        }else{
+        } else {
             $this->assertNotEquals($locale, $this->app['translator']->resolveWith($langCode)->locale);
         }
     }

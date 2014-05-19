@@ -38,7 +38,7 @@ class UrlGenerator extends IlluminateUrlGenerator
      */
     public function langSwitch($langCode, $extra = array(), $secure = null)
     {
-        $langSegment = $this->request->segment(Config::get('language::route_segment', 1));
+        $langSegment = Lang::getCodeFromSegment();
 
         if(Lang::isValidCode($langSegment)) {
             $current = preg_replace('#^/?([a-z]{2}/)?#', null, preg_replace('#^/([a-z]{2})?$#', null, $this->request->getPathInfo()));
