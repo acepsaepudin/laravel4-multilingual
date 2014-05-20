@@ -15,6 +15,7 @@ abstract class AppTestCase extends \Illuminate\Foundation\Testing\TestCase
     {
         // No call to parent::setUp() from Illuminate\Foundation\Testing\TestCase
         $this->app = $this->createApplication();
+        $this->app['files'] = new \Illuminate\Filesystem\Filesystem();
         $this->client = $this->createClient();
         $this->app->boot();
     }

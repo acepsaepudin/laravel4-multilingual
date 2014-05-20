@@ -36,7 +36,7 @@ class Translator extends \Illuminate\Translation\Translator
     public function __construct(Container $app)
     {
         $this->app = $app;
-        $this->loader = $app['translation.loader'];
+        $this->loader = $app['thor.language.translation.loader'];
         $this->locale = $app['config']->get('app.locale');
         $this->fallback = $app['config']->get('app.fallback_locale');
         $this->language = null;
@@ -84,8 +84,15 @@ class Translator extends \Illuminate\Translation\Translator
      */
     public function resolve($segmentIndex = null)
     {
-        return $this->resolveWith($this->resolveFromRequest(($segmentIndex === null) ?
-                                        $this->app['config']->get('language::segment_index') : $segmentIndex));
+        $language = $this->resolveWith($this->resolveFromRequest(($segmentIndex === null) ?
+                                $this->app['config']->get('language::segment_index') : $segmentIndex));
+
+        // Once it is resolved, set the fallback locale to the language code, so language files can be named
+        // with the language code too
+
+        $this->fallback = $language->code;
+
+        return $language;
     }
 
     /**
@@ -164,6 +171,18 @@ class Translator extends \Illuminate\Translation\Translator
     public function isValidCode($code)
     {
         return in_array($code, array_keys($this->getAvailableLocales()));
+    }
+
+    public function localeFromCode($code)
+    {
+        $locales = $this->getAvailableLocales();
+        return isset($locales[$code]) ? $locales[$code] : $code;
+    }
+
+    public function codeFromLocale($locale)
+    {
+        $codes = array_flip($this->getAvailableLocales());
+        return isset($codes[$locale]) ? $codes[$locale] : $locale;
     }
 
     protected function resolveFromDb($langCode)
