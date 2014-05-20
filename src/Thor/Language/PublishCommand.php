@@ -74,6 +74,7 @@ class PublishCommand extends Command
         if(!is_null($path)) {
             return $this->laravel['path.base'] . '/' . $path;
         }
+        return null;
     }
 
     /**

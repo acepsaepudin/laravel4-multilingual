@@ -19,10 +19,10 @@
 
     <filter>
         <whitelist>
-            <directory>src/Language</directory>
+            <directory>src/Thor/Language</directory>
             <exclude>
-                <file>src/Language/LanguageServiceProvider.php</file>
-                <file>src/Language/Seeder.php</file>
+                <file>src/Thor/Language/LanguageServiceProvider.php</file>
+                <file>src/Thor/Language/Seeder.php</file>
             </exclude>
         </whitelist>
     </filter>

@@ -31,8 +31,7 @@ class LanguageServiceProvider extends ServiceProvider
             'thor.language.command.publish'
         ));
 
-        // We are using PSR-4, so we need to specify the path
-        $this->package('thor/language', 'language', realpath(__DIR__ . '/../'));
+        $this->package('thor/language');
     }
 
     /**

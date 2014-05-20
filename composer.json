@@ -23,8 +23,11 @@
         "classmap": [
             "src/migrations"
         ],
+        "psr-0": {
+            "Thor\\Language\\": ["src"]
+        },
         "psr-4": {
-            "Thor\\Language\\": ["src/Language", "tests", "tests/testcases"]
+            "Thor\\Language\\": ["tests", "tests/testcases"]
         }
     },
     "minimum-stability": "stable"

@@ -20,18 +20,27 @@ class LangPublishTest extends PackageTestCase
         // Check files
         $this->assertFileExists($this->app['path'].'/lang/packages/language/en/header.php');
         $this->assertFileExists($this->app['path'].'/lang/packages/language/en/footer.php');
-        
-        // Remove packages folder
-        $this->app['files']->deleteDirectory(realpath(__DIR__.'/fixture/app/lang/packages/'));
+    }
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFailPublishLang(){
+        $artisan = $this->app->make('artisan');
+        $artisan->call('lang:publish', array('package'=>'thor/language'));
     }
     
     /**
-     * 
+     * @depends testPublishLang
      */
     public function testAlternateLangLoader(){
+        $this->testPublishLang();
+        
         $this->assertEquals('Password reminder sent!', $this->app['translator']->trans('reminders.sent'));
         $this->assertEquals('Copyright 2014 Thor Framework', $this->app['translator']->trans('language::footer.copyright'));
         $this->assertEquals('Thor Framework', $this->app['translator']->trans('language::header.brand'));
         $this->assertEquals('Lorem Ipsum', $this->app['translator']->trans('language::header.subtitle'));
+        
+        // Remove packages folder
+        $this->app['files']->deleteDirectory(realpath(__DIR__.'/fixture/app/lang/packages/'));
     }
 }
