@@ -5,7 +5,7 @@ namespace Thor\Language;
 /**
  *
  */
-class FileLoaderTest extends PackageTestCase
+class LangPublishTest extends PackageTestCase
 {
     /**
      * 
@@ -28,7 +28,7 @@ class FileLoaderTest extends PackageTestCase
     /**
      * 
      */
-    public function testCascadeLangLoader(){
+    public function testAlternateLangLoader(){
         $this->assertEquals('Password reminder sent!', $this->app['translator']->trans('reminders.sent'));
         $this->assertEquals('Copyright 2014 Thor Framework', $this->app['translator']->trans('language::footer.copyright'));
         $this->assertEquals('Thor Framework', $this->app['translator']->trans('language::header.brand'));
