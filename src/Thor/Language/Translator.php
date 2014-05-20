@@ -150,7 +150,7 @@ class Translator extends \Illuminate\Translation\Translator
      */
     public function getAvailableLocales()
     {
-        return $this->app['config']->get('language::available_locales');
+        return $this->app['config']->get('language::available_locales', array());
     }
 
     /**
@@ -228,7 +228,7 @@ class Translator extends \Illuminate\Translation\Translator
         }
         if($isFound === false) {
             $fallbackLocale = $this->app['config']->get('app.fallback_locale');
-            $locale = isset($availableLocales[$fallbackLocale]) ? $availableLocales[$fallbackLocale] : $locale;
+            $locale = isset($availableLocales[$fallbackLocale]) ? $availableLocales[$fallbackLocale] : $langCode;
             $this->setLanguage(new Language(array('id' => -1, 'name' => $fallbackLocale,
                 'code' => $fallbackLocale, 'locale' => $locale)), true);
         }
