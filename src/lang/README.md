@@ -1,1 +1,0 @@
-This lang files are only for testing purposes

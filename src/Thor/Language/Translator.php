@@ -36,7 +36,7 @@ class Translator extends \Illuminate\Translation\Translator
     public function __construct(Container $app)
     {
         $this->app = $app;
-        $this->loader = $app['thor.language.translation.loader'];
+        $this->loader = $app['translation.loader'];
         $this->locale = $app['config']->get('app.locale');
         $this->fallback = $app['config']->get('app.fallback_locale');
         $this->language = null;
