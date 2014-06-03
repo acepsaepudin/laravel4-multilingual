@@ -2,18 +2,18 @@
 
 namespace Thor\Language;
 
-use Illuminate\Container\Container;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 
 class LanguageServiceProvider extends ServiceProvider
 {
+
     /**
      * Indicates if loading of the provider is deferred.
      *
      * @var bool
      */
-    //protected $defer = false;
+    protected $defer = false;
 
     /**
      * Bootstrap the application events.
@@ -22,11 +22,11 @@ class LanguageServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Facades\Lang::swap($this->app['thor.language.translator']);
-        Facades\Route::swap($this->app['thor.language.router']);
-        Facades\URL::swap($this->app['thor.language.url']);
+        Facades\Lang::swap($this->app['thor.translator']);
+        Facades\Route::swap($this->app['thor.router']);
+        Facades\URL::swap($this->app['thor.url']);
 
-        $this->package('thor/language');
+        $this->package('thor/language', 'language');
     }
 
     /**
@@ -36,7 +36,10 @@ class LanguageServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app = $this->bindClasses($this->app);
+        $this->app['config']->package('thor/language', realpath(__DIR__ . '/../../config'));
+        $this->registerTranslator();
+        $this->registerRouter();
+        $this->registerUrlGenerator();
     }
 
     /**
@@ -47,57 +50,45 @@ class LanguageServiceProvider extends ServiceProvider
     public function provides()
     {
         return array(
-            'thor.language.translator',
-            'thor.language.router',
-            'thor.language.url'
+            'thor.translator',
+            'thor.router',
+            'thor.url'
         );
     }
 
     /**
-     * Create a Polyglot container
      *
-     * @param  Container $app
-     *
-     * @return Container
+     * @return void
      */
-    public static function make($app = null)
+    protected function registerTranslator()
     {
-        if(!$app) {
-            $app = new Container;
-        }
-
-        // Bind classes
-        $provider = new static($app);
-        $app = $provider->bindClasses($app);
-
-        return $app;
+        $this->app->bindShared('thor.translator', function($app) {
+            return new Translator($app);
+        });
     }
 
     /**
-     * Bind package classes to a Container
      *
-     * @param  Container $app
-     * @return Container
+     * @return void
      */
-    public function bindClasses(Container $app)
+    protected function registerRouter()
     {
-        $app['config']->package('thor/language', realpath(__DIR__ . '/../config'));
-
-        $app->singleton('thor.language.translator', function ($app) {
-            return new Translator($app);
-        });
-
-        $app->singleton('thor.language.router', function ($app) {
+        $this->app->bindShared('thor.router', function($app) {
             return new Router($app['events'], $app);
         });
+    }
 
-        $app->singleton('thor.language.url', function ($app) {
-            return new UrlGenerator($app['router']->getRoutes(), $app->rebinding('request', function ($app, $request) {
-                        $app['url']->setRequest($request);
+    /**
+     *
+     * @return void
+     */
+    protected function registerUrlGenerator()
+    {
+        $this->app->bindShared('thor.url', function($app) {
+            return new UrlGenerator($app['thor.router']->getRoutes(), $app->rebinding('request', function ($app, $request) {
+                        $app['thor.url']->setRequest($request);
                     }));
         });
-
-        return $app;
     }
 
 }

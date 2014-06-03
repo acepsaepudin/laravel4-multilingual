@@ -8,7 +8,7 @@ class RouterTestCase extends PackageTestCase
     public function testRouteFacadeIsSwapped()
     {
         $this->assertArrayHasKey('router', $this->app);
-        $this->assertArrayHasKey('thor.language.router', $this->app);
+        $this->assertArrayHasKey('thor.router', $this->app);
         $this->assertInstanceOf('Thor\\Language\\Router', $this->app['router']);
     }
 
