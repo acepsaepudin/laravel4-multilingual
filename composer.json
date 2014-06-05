@@ -1,6 +1,6 @@
 {
     "name": "thor/language",
-    "description": "Extends Laravel 4 Route, Lang and URL with multilingual capabilities",
+    "description": "Multilingual features for Laravel 4",
     "keywords": ["i18n", "laravel", "multilingual", "translation", "language", "locale"],
     "license": "MIT",
     "authors": [
@@ -15,13 +15,13 @@
         "illuminate/container": "4.1.*",
         "illuminate/support": "4.1.*"
     },
-    "suggest": {
-        "thor/generators": "",
-        "thor/models": ""
-    },
     "require-dev": {
         "phpunit/phpunit": "4.*",
         "laravel/framework": "4.1.*"
+    },
+    "suggest": {
+        "thor/generators": "",
+        "thor/models": ""
     },
     "autoload": {
         "classmap": [
