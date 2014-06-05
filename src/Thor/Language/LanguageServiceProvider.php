@@ -53,7 +53,8 @@ class LanguageServiceProvider extends ServiceProvider
         return array(
             'thor.translator',
             'thor.router',
-            'thor.url'
+            'thor.url',
+            'thor.language.publisher'
         );
     }
 
@@ -93,12 +94,12 @@ class LanguageServiceProvider extends ServiceProvider
     }
     
     protected function registerPublishCommand(){
-        $this->app->bindShared('thor.translate.publisher', function($app) {
+        $this->app->bindShared('thor.language.publisher', function($app) {
             return new Publisher($app['files'], $app['path'] . '/lang');
         });
 
         $this->app->bindShared('command.lang.publish', function($app) {
-            return new PublishCommand($app['thor.translate.publisher']);
+            return new PublishCommand($app['thor.language.publisher']);
         });
 
         $this->commands(array(
