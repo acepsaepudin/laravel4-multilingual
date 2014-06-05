@@ -1,6 +1,6 @@
 {
     "name": "thor/language",
-    "description": "Laravel 4 multilingual features. Laravel language package.",
+    "description": "Extends Laravel 4 Route, Lang and URL with multilingual capabilities",
     "keywords": ["i18n", "laravel", "multilingual", "translation", "language", "locale"],
     "license": "MIT",
     "authors": [
@@ -16,7 +16,7 @@
         "illuminate/support": "4.1.*"
     },
     "suggest": {
-        "thor/translate": "",
+        "thor/generators": "",
         "thor/models": ""
     },
     "require-dev": {

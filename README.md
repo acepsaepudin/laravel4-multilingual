@@ -1,7 +1,7 @@
 thor/language
 =====
 
-Laravel 4 multilingual features, based in [Polyglot](https://github.com/Anahkiasen/polyglot/)
+Multilingual features for Laravel 4, based on [Polyglot](https://github.com/Anahkiasen/polyglot/)
 
 [![Build Status](https://img.shields.io/travis/thorcms/language.svg)](https://travis-ci.org/thorcms/language)
 [![Total Downloads](http://img.shields.io/packagist/dt/thor/language.svg)](https://packagist.org/packages/thor/language)
