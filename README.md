@@ -13,6 +13,8 @@ Laravel 4 multilingual features, based in [Polyglot](https://github.com/Anahkias
 * Lang, Route and URL facades are extended with useful multilingual methods like:
 `Lang::code()`, `Route::langGroup()`, `URL::langTo()`, ...
 * Translations would fallback to the language code by default. E.g. 'en_US' would fallback to 'en'.
+* Lang files publishing support through `lang:publish vendor/package [namespace]` command
+* Manage your app translation files through a web interface (feature in progress)
 
 ## Setup
 
@@ -45,7 +47,7 @@ Publish config to your laravel app : `php artisan config:publish thor/language`
 In order to use the languages stored in a database, you must run the package migrations first. Seeding is also optional.
 
     php artisan migrate --package="thor/language"
-    php artisan db:seed --class="Thor\Language\Seeder"
+    php artisan db:seed --class="Thor\Language\LanguagesTableSeeder"
 
 Then change `use_database` to `true` in the config file.
 

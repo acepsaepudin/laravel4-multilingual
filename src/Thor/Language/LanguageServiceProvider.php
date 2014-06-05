@@ -40,6 +40,7 @@ class LanguageServiceProvider extends ServiceProvider
         $this->registerTranslator();
         $this->registerRouter();
         $this->registerUrlGenerator();
+        $this->registerPublishCommand();
     }
 
     /**
@@ -89,6 +90,20 @@ class LanguageServiceProvider extends ServiceProvider
                         $app['thor.url']->setRequest($request);
                     }));
         });
+    }
+    
+    protected function registerPublishCommand(){
+        $this->app->bindShared('thor.translate.publisher', function($app) {
+            return new Publisher($app['files'], $app['path'] . '/lang');
+        });
+
+        $this->app->bindShared('command.lang.publish', function($app) {
+            return new PublishCommand($app['thor.translate.publisher']);
+        });
+
+        $this->commands(array(
+            'command.lang.publish'
+        ));
     }
 
 }

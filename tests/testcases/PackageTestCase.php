@@ -70,7 +70,7 @@ abstract class PackageTestCase extends AppTestCase
             '--path' => 'migrations',
         ));
         $artisan->call('db:seed', array(
-            '--class' => 'Thor\\Language\\Seeder',
+            '--class' => 'Thor\\Language\\LanguagesTableSeeder',
         ));
     }
 

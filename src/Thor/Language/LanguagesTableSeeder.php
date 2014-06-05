@@ -2,7 +2,7 @@
 
 namespace Thor\Language;
 
-class Seeder extends \Seeder
+class LanguagesTableSeeder extends \Seeder
 {
 
     /**
