@@ -3,9 +3,9 @@ thor/language
 
 Multilingual features for Laravel 4, based on [Polyglot](https://github.com/Anahkiasen/polyglot/)
 
-[![Build Status](https://img.shields.io/travis/thorcms/language.svg)](https://travis-ci.org/thorcms/language)
+[![Build Status](https://img.shields.io/travis/mjolnic/laravel4-multilingual.svg)](https://travis-ci.org/mjolnic/laravel4-multilingual)
 [![Total Downloads](http://img.shields.io/packagist/dt/thor/language.svg)](https://packagist.org/packages/thor/language)
-[![Latest Stable Version](https://img.shields.io/github/tag/thorcms/language.svg)](https://github.com/thorcms/language/releases)
+[![Latest Stable Version](https://img.shields.io/github/tag/mjolnic/laravel4-multilingual.svg)](https://github.com/mjolnic/laravel4-multilingual/releases)
 
 * Locale and language autodetection (based on URI segment or User Agent)
 * Optional language model, migration and seeder
