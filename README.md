@@ -13,8 +13,7 @@ Multilingual features for Laravel 4, based on [Polyglot](https://github.com/Anah
 * Lang, Route and URL facades are extended with useful multilingual methods like:
 `Lang::code()`, `Route::langGroup()`, `URL::langTo()`, ...
 * Translations would fallback to the language code by default. E.g. 'en_US' would fallback to 'en'.
-* Lang files publishing support through `lang:publish vendor/package [namespace]` command
-* Manage your app translation files through a web interface (feature in progress)
+* Lang files publishing support through `lang:publish vendor/package [namespace]` commandth
 
 ## Setup
 
