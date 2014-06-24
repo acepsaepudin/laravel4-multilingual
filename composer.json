@@ -12,16 +12,12 @@
     ],
     "require": {
         "php": ">=5.4",
-        "illuminate/container": "4.1.*",
-        "illuminate/support": "4.1.*"
+        "illuminate/container": ">=4.1",
+        "illuminate/support": ">=4.1"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*",
-        "laravel/framework": "4.1.*"
-    },
-    "suggest": {
-        "thor/generators": "",
-        "thor/models": ""
+        "laravel/framework": ">=4.1"
     },
     "autoload": {
         "classmap": [
